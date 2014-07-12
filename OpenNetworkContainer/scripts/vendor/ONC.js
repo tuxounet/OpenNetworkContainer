@@ -9,18 +9,19 @@ var ONC = function (params) {
 
     var defaultParams = {
         viewportSelector: "body",
-        sliderSelector: ".pages"
+        sliderSelector: ".pages",
+        configPath: "config.js"
     }
 
     /* Configuration du conteneur */
     self.params = params == null ? defaultParams : params;
-    
+
 
     /* Boot de référence de l'application */
     self.boot = new ONC_Boot(self);
 
     /* Config de référence de l'application */
-    self.config = new ONC_Config();
+    self.config = new ONC_Config(self);
 
     /* Gestionnaire de vue de référence */
     self.viewport = new ONC_Viewport();
@@ -47,7 +48,7 @@ var ONC = function (params) {
 
                     //Gestionnaire de vue                    
                     self.viewport.initialize(self.params.viewportSelector)
-                    
+
                     //Router 
                     self.router.initialize(self.params.sliderSelector);
 

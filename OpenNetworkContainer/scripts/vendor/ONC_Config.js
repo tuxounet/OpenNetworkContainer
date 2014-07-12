@@ -16,16 +16,22 @@
 
         ONC_Logger.log("ONC: Chargement de la config...");
 
-        if (typeof config == "undefined") {
-            ONC_Logger.warn("ONC: Configuration introuvable, chargement de la config par défaut");
-            self.config = defautConfig; 
-        }
-        else {
-            self.config = config;
-            ONC_Logger.log("ONC: Config chargée " + JSON.stringify(config));
-        }
-        
-        if (callback) callback(); 
+
+        $.ajax(app.params.configPath)
+            .done(function (result) {
+                eval(result);
+                self.config = config;
+                ONC_Logger.log("ONC: Config chargée " + JSON.stringify(config));
+            })
+            .fail(function (xhr, e) {
+                ONC_Logger.error(e);
+                self.config = defautConfig;
+                ONC_Logger.warn("ONC: Configuration introuvable, chargement de la config par défaut");
+            })
+            .always(function () {
+                if (callback) callback();
+            })
+
     };
 
 

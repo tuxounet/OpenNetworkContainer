@@ -115,6 +115,7 @@
     <Folder Include="res\screens\wp8\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config.js" />
     <Content Include="config.xml">
       <SubType>Designer</SubType>
     </Content>
