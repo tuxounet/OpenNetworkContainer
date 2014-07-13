@@ -113,6 +113,7 @@
     <Folder Include="res\screens\ios\" />
     <Folder Include="res\screens\windows8\" />
     <Folder Include="res\screens\wp8\" />
+    <Folder Include="styles\vendor\onc\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config.js" />
@@ -128,6 +129,8 @@
     <Content Include="others\StartNodeServer.cmd" />
     <Content Include="others\UpdateDataModel.cmd" />
     <Content Include="css\index.css" />
+    <Content Include="pages\about.html" />
+    <Content Include="pages\about.js" />
     <Content Include="pages\home.html" />
     <Content Include="pages\home.js" />
     <Content Include="res\cert\android\ant.properties" />
@@ -172,19 +175,19 @@
     <Content Include="res\screens\windows8\splashscreen.png" />
     <Content Include="res\screens\wp8\screen-portrait.jpg" />
     <Content Include="scripts\app\HelloWorldApp.js" />
-    <Content Include="scripts\libs\knockout-3.1.0.js" />
-    <Content Include="scripts\libs\moment-with-langs.js" />
-    <Content Include="scripts\vendor\dependencies\fastclick.js" />
-    <Content Include="scripts\vendor\dependencies\jquery-2.1.0.min.js" />
-    <Content Include="scripts\vendor\dependencies\modernizr-2.7.2.js" />
-    <Content Include="scripts\vendor\ONC_Boot.js" />
-    <Content Include="scripts\vendor\ONC.js" />
-    <Content Include="scripts\vendor\ONC_Config.js" />
-    <Content Include="scripts\vendor\ONC_Logger.js" />
-    <Content Include="scripts\vendor\ONC_PageContainer.js" />
-    <Content Include="scripts\vendor\ONC_PageSlider.js" />
-    <Content Include="scripts\vendor\ONC_Router.js" />
-    <Content Include="scripts\vendor\ONC_Viewport.js" />
+    <Content Include="scripts\vendor\knockout-3.1.0.js" />
+    <Content Include="scripts\vendor\moment-with-langs.js" />
+    <Content Include="scripts\vendor\onc\dependencies\fastclick.js" />
+    <Content Include="scripts\vendor\onc\dependencies\jquery-2.1.0.min.js" />
+    <Content Include="scripts\vendor\onc\dependencies\modernizr-2.7.2.js" />
+    <Content Include="scripts\vendor\onc\ONC.js" />
+    <Content Include="scripts\vendor\onc\ONC_Boot.js" />
+    <Content Include="scripts\vendor\onc\ONC_Config.js" />
+    <Content Include="scripts\vendor\onc\ONC_Logger.js" />
+    <Content Include="scripts\vendor\onc\ONC_PageContainer.js" />
+    <Content Include="scripts\vendor\onc\ONC_PageSlider.js" />
+    <Content Include="scripts\vendor\onc\ONC_Router.js" />
+    <Content Include="scripts\vendor\onc\ONC_Viewport.js" />
     <Content Include="scripts\_references.js" />
     <Content Include="server.js" />
   </ItemGroup>

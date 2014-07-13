@@ -1,17 +1,19 @@
-﻿var ONC_Boot = function (app) {
+﻿/// <reference path="dependencies/modernizr-2.7.2.js" />
+var ONC_Boot = function (app) {
 
     var self = this;
     self.app = app;
     self.isPhoneGap = false;
     self.isLegacy = false;
-    
+
 
     var initCallback = null;
 
     // Application Constructor
     self.initialize = function (callback) {
+        
 
-        ONC_Logger.log("OpenNetworkContainer 14.4 ((c) Christophe Tiraoui 2014)")
+        ONC_Logger.log("OpenNetworkContainer " + self.app.version + " ((c) Christophe Tiraoui 2014)")
         ONC_Logger.log("ONC: Boot...");
 
         initCallback = callback;
@@ -56,6 +58,15 @@
     //Processus de démarrage
     self.startup = function () {
         ONC_Logger.log("ONC: Boot terminé");
+
+        //Test du mode legacy 
+        if (typeof Modernizr === "undefined" || Modernizr.csstransitions == null) {
+            //On ne peut pas tester, on passe en legacy
+            self.isLegacy = true;
+        }
+        else {
+            self.isLegacy = Modernizr.csstransitions;
+        }
 
         //Si il y a un callback de démarrage, on l'invoque
         if (initCallback != null) initCallback();
