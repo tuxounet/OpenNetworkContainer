@@ -113,7 +113,6 @@
     <Folder Include="res\screens\ios\" />
     <Folder Include="res\screens\windows8\" />
     <Folder Include="res\screens\wp8\" />
-    <Folder Include="styles\vendor\onc\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config.js" />
@@ -191,6 +190,8 @@
     <Content Include="scripts\vendor\onc\ONC_Viewport.js" />
     <Content Include="scripts\_references.js" />
     <Content Include="server.js" />
+    <Content Include="styles\vendor\onc\ONC_PageSlider.css" />
+    <Content Include="styles\vendor\onc\ONC_Viewport.css" />
   </ItemGroup>
   <PropertyGroup>
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>

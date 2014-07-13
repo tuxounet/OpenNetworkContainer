@@ -7,7 +7,7 @@ var HelloWorld = {
     app: new ONC({
         viewportSelector: "#viewport",
         sliderSelector: "#viewport .pages",
-        forceLegacy: true,
+        forceLegacy: false,
     }),
 
 

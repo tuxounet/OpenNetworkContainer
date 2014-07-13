@@ -14,19 +14,14 @@
         self.selector = selector;
         self.$viewport = $(selector);
 
-
+        //Vérification de la présence du viewport
+        if (self.$viewport.length == 0) {
+            self.$viewport = null;
+            throw "VIEWPORT : Viewport " + selector + " introuvable";
+        }
 
     }
-
-
-    //Vérification de la présence du viewport
-    if (self.$viewport.length == 0) {
-        self.$viewport = null;
-        throw "VIEWPORT : Viewport " + selector + " introuvable";
-    }
-
-
-
+    
     //Obtient la largeur du viewport
     self.getWidth = function () {
         if (self.$viewport == null) return -1;

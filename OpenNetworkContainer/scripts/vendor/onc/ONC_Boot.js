@@ -58,10 +58,9 @@ var ONC_Boot = function (app) {
     //Processus de démarrage
     self.startup = function () {
         ONC_Logger.log("ONC: Boot terminé");
-
-
+   
         //On demande de forcer le mode legacy 
-        if (self.app.params.forceLegacy) {
+        if (self.app.params.forceLegacy === true) {
             self.isLegacy = true;
         }
         else {
@@ -71,7 +70,7 @@ var ONC_Boot = function (app) {
                 self.isLegacy = true;
             }
             else {
-                self.isLegacy = Modernizr.csstransitions;
+                self.isLegacy = !Modernizr.csstransitions;
             }
 
         }

@@ -14,7 +14,9 @@ var ONC = function (params) {
         markupPageExtension: ".html",
         classfilePageExtension: ".js",
         startpage: "pages/home",
-        forceLegacy: false, 
+        forceLegacy: false,
+        inAnimation: 1,
+        outAnimation : 2
     }
 
     /* Configuration du conteneur */
