@@ -13,7 +13,8 @@ var ONC = function (params) {
         configPath: "config.js",
         markupPageExtension: ".html",
         classfilePageExtension: ".js",
-        startpage : "pages/home"
+        startpage: "pages/home",
+        forceLegacy: false, 
     }
 
     /* Configuration du conteneur */

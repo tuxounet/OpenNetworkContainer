@@ -6,7 +6,8 @@ var HelloWorld = {
     /*Conteneur */
     app: new ONC({
         viewportSelector: "#viewport",
-        sliderSelector: "#viewport .pages",       
+        sliderSelector: "#viewport .pages",
+        forceLegacy: true,
     }),
 
 

@@ -7,7 +7,7 @@ var ONC_Router = function (app) {
 
     //Initialisation des variables
     self.currentPage = null;
-    self.slider = new ONC_PageSlider();
+    self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
     self.pagecontainer = new ONC_PageContainer();
@@ -76,81 +76,101 @@ var ONC_Router = function (app) {
 
 
 
-        //Avec parametres ?
-        if (hash.indexOf("/") != -1) {
-            //Extration des données
-            param = hash.substr(hash.indexOf("/") + 1, hash.length);
-            hash = hash.substr(0, hash.indexOf("/"));
-        }
-        else {
-            //Non, sans parametres
-            param = null;
-        }
+        ////Avec parametres ?
+        //if (hash.indexOf("/") != -1) {
+        //    //Extration des données
+        //    param = hash.substr(hash.indexOf("/") + 1, hash.length);
+        //    hash = hash.substr(0, hash.indexOf("/"));
+        //}
+        //else {
+        //    //Non, sans parametres
+        //    param = null;
+        //}
 
         //Récuperation du markup
-        $.ajax(markupPage)
-            .done(function (result) {
+        $.ajax({
+            url: markupPage,
+            cache: false
+        }).done(function (result) {
 
 
-                if (result != null) {
-                    page = result;
+            if (result != null) {
+                page = result;
+            }
+            else {
+                //On ne trouve pas le contenut
+                throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
+            }
+
+
+
+            //Dechargement de la page courante
+            self.unloadCurrent(function () {
+
+                var $target = $(page);
+
+                //On recherche l'id de page sur le makup
+                pageId = $target.attr("id");
+                if (pageId != null) {
+                    $.ajax({
+                        url: classfilePage,
+                        cache: false
+                    }).done(function (result) {
+
+                        eval(result);
+
+                        //On tente d'initialiser la nouvelle page
+                        if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
+                            var pageInstance = eval("new " + pageId + "_PageClass()");
+
+                            self.currentPage = pageInstance;
+
+                            //Binding de la page
+                            if (pageInstance != null && pageInstance.bind != null) {
+                                pageInstance.bind($target[0]);
+                            }
+
+                            //Chargement de la page
+                            if (pageInstance != null && pageInstance.load != null) {
+                                pageInstance.load(param);
+                            }
+                        }
+
+
+                    }).fail(function (xhr, e) {
+                        self.app.onerror(e);
+                    }).always(function () {
+
+                        //On slide vers cette nouvelle page
+                        self.slider.slidePage($target);
+
+                        //On Construit la pages 
+                        self.pagecontainer.build();
+
+
+                        //Affichage du contenu cible une fois construit
+                        self.pagecontainer.showContent(function () {
+                            if (callback) callback();
+                        });
+                    });
                 }
                 else {
-                    //On ne trouve pas le contenut
-                    throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
-                }
-
-
-
-                //Dechargement de la page courante
-                self.unloadCurrent(function () {
-
-                    var $target = $(page);
-
-                    //On recherche l'id de page sur le makup
-                    pageId = $target.attr("id");
-                    if (pageId != null)
-                    {
-                        $.ajax(classfilePage)
-                          .done(function (result) {
-                              eval(result);
-                           
-                              //On tente d'initialiser la nouvelle page
-                              if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
-                                  var pageInstance = eval("new " + pageId + "_PageClass()");
-
-                                  self.currentPage = pageInstance;
-
-                                  //Chargement de la page
-                                  if (pageInstance != null && pageInstance.load != null) {
-                                      pageInstance.load(param);
-                                  }
-                              }
-                          }).fail(function (xhr, e) {
-                              self.app.onerror(e);
-                          }).always(function () {
-                              //On Construit la pages 
-                              self.pagecontainer.build();
-
-
-                              //Affichage du contenu cible une fois construit
-                              self.pagecontainer.showContent(function () {
-                                  if (callback) callback();
-                              });
-                          });
-                    }
-
-
-                 
                     //On slide vers cette nouvelle page
                     self.slider.slidePage($target);
 
-                });
+
+                }
 
 
-            }).fail(function (xhr, e) {
-                self.app.onerror(e);
+
+           
+
             });
+
+
+        }).fail(function (xhr, e) {
+            self.app.onerror(e);
+        });
 
     }
 
@@ -163,6 +183,11 @@ var ONC_Router = function (app) {
 
         //On decharge la page courante 
         self.pagecontainer.destroy();
+
+
+        //Débind
+        if (self.currentPage != null && self.currentPage.unbind != null)
+            self.currentPage.unbind();
 
         //On reinitialise la notion de "page courante"
         self.currentPage = null;

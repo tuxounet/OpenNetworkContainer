@@ -1,21 +1,11 @@
-﻿var home_PageClass = function () {
+﻿/// <reference path="../scripts/vendor/onc/ONC_Page.js" />
+var home_PageClass = function () {
+    
+    //Héritage page de base 
+    ONC_Page.call(this);
+
     var self = this;
-    self.pivot = null;
-    self.pageElement = function () {
-        return $(".page.center")[0];
-    };
-    self.load = function (reason) {
-        
-        //Branchement du ViewModel
-        ko.applyBindings(self, self.pageElement());
 
-
-    };
-
-    self.unload = function () {
-        //Débranchement du viewModel
-        ko.cleanNode(self.pageElement());
-    };
 
 
 

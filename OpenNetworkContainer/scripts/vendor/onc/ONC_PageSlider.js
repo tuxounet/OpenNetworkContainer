@@ -3,18 +3,19 @@
  * - jQuery dependency for now. this could also be easily removed.
  */
 
-function ONC_PageSlider() {
+function ONC_PageSlider(app) {
 
-    var self = this; 
+    var self = this;
+
+    self.app = app;
 
     var container = $("body"),
         currentPage,
         stateHistory = [];
 
-    
 
-    self.initialize = function ($container)
-    {
+
+    self.initialize = function ($container) {
         container = $container;
         //Affichage 
         $container.show();
@@ -22,35 +23,52 @@ function ONC_PageSlider() {
 
     }
 
+
+
+    /* Slide la page courante vers la pages suivante passée en parametres */
+    self.slidePage = function (page, callback) {      
+        if (self.app.boot.isLegacy == true) {
+            //On est en mode legacy, on fait du best effort pour la transition de page
+            self.slidePageLegacy(page, callback);
+        }
+        else {
+            //Mode complet, on fait des transiitons en CSS3
+            throw "Not implemented Yet";
+        }
+    }
+
+
+    //#region Mode Legacy Transition
+
+
     // Use self function if you want PageSlider to automatically determine the sliding direction based on the state history
-    self.slidePage = function (page, callback) {
+    self.slidePageLegacy = function (page, callback) {
 
         var l = stateHistory.length,
             state = window.location.hash;
+        var from = null;
 
         if (l === 0) {
+            //Page initiale
             stateHistory.push(state);
-            self.slidePageFrom(page, null, callback);
-
-            return;
-        }
-        if (state === stateHistory[l - 2]) {
-            stateHistory.pop();
-            self.slidePageFrom(page, 'left', callback);
         } else {
-            stateHistory.push(state);
-            self.slidePageFrom(page, 'right', callback);
+            if (state === stateHistory[l - 2]) {
+                stateHistory.pop();
+                from = "left";
+            } else {
+                stateHistory.push(state);
+                from = "right";
+            }
         }
 
-    }
 
-    // Use self function directly if you want to control the sliding direction outside PageSlider
-    self.slidePageFrom = function (page, from, callback) {
+        //Transition Legacy
+        currentPage = $(".page.center", container);
 
-
-        container.append(page);
-
+        //Pas de page précédente, ajout brut
         if (!currentPage || !from) {
+            container.append(page);
+
             page.attr("class", "page center");
             currentPage = page;
 
@@ -59,33 +77,33 @@ function ONC_PageSlider() {
             return;
         }
 
-        // Position the page at the starting position of the animation
-        page.attr("class", "page " + from);
+        //On masque les pages
+        currentPage.hide();
+        page.hide();
 
-        //On tuilise Modernize pour savoir sur quel eveneltn de fin de transition ets a utiliser
+        //Ajout de la page au DOM 
+        container.append(page);
 
-        var transEndEventNames = {
-            'WebkitTransition': 'webkitTransitionEnd',// Saf 6, Android Browser
-            'MozTransition': 'transitionend',      // only for FF < 15
-            'transition': 'transitionend'       // IE10, Opera, Chrome, FF 15+, Saf 7+
-        };
-        transEndEventName = transEndEventNames[Modernizr.prefixed('transition')];
-
-        currentPage.one(transEndEventName, function (e) {
-            $(e.target).remove();
+        //Affichage de la page courante
+        page.fadeIn("slow", function () {
+            //Suppression du dom de la page précédente
+            currentPage.remove();
+            page.attr("class", "page center");
 
             if (callback != null) callback();
         });
-
-
-
-        // Force reflow. More information here: http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
-        container[0].offsetWidth;
-
-        // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
-        page.attr("class", "page transition center");
-        currentPage.attr("class", "page transition " + (from === "left" ? "right" : "left"));
-        currentPage = page;
     }
+    //#endregion
+
+
+
+
+
+    //#region Mode CSS3 Transition
+
+
+
+
+    //#endregion
 
 }
