@@ -16,6 +16,8 @@ function ONC_PageSlider() {
     self.initialize = function ($container)
     {
         container = $container;
+        //Affichage 
+        $container.show();
 
 
     }

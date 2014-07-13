@@ -1,13 +1,12 @@
 ﻿/// <reference path="../vendor/ONC_App.js" />
 /// <reference path="../vendor/ONC.js" />
 
-window.HelloWorld = {
+var HelloWorld = {
 
     /*Conteneur */
     app: new ONC({
         viewportSelector: "#viewport",
-        sliderSelector: "#viewport .pages",
-        configPath: "config.js"
+        sliderSelector: "#viewport .pages",       
     }),
 
 
@@ -16,12 +15,14 @@ window.HelloWorld = {
 
         console.log("Start");
 
+        //Config de libs
+        moment.lang("fr");
+
+        //Demarrage de l'app
         this.app.run(function () {
 
             //Le conteneur est démarré
             console.log("Started")
-
-
         });
 
 

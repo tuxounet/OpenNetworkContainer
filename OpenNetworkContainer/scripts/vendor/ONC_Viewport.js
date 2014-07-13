@@ -1,7 +1,7 @@
-﻿var ONC_Viewport = function () {
+﻿var ONC_Viewport = function (app) {
     var self = this;
 
-
+    self.app = app;
 
 
 

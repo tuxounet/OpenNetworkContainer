@@ -128,6 +128,8 @@
     <Content Include="others\StartNodeServer.cmd" />
     <Content Include="others\UpdateDataModel.cmd" />
     <Content Include="css\index.css" />
+    <Content Include="pages\home.html" />
+    <Content Include="pages\home.js" />
     <Content Include="res\cert\android\ant.properties" />
     <Content Include="res\icons\android\icon-36-ldpi.png" />
     <Content Include="res\icons\android\icon-48-mdpi.png" />
@@ -170,6 +172,8 @@
     <Content Include="res\screens\windows8\splashscreen.png" />
     <Content Include="res\screens\wp8\screen-portrait.jpg" />
     <Content Include="scripts\app\HelloWorldApp.js" />
+    <Content Include="scripts\libs\knockout-3.1.0.js" />
+    <Content Include="scripts\libs\moment-with-langs.js" />
     <Content Include="scripts\vendor\dependencies\fastclick.js" />
     <Content Include="scripts\vendor\dependencies\jquery-2.1.0.min.js" />
     <Content Include="scripts\vendor\dependencies\modernizr-2.7.2.js" />

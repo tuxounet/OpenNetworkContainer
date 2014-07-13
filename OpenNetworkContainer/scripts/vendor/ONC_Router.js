@@ -1,7 +1,9 @@
 ﻿//Router basé sur le hashchange
-var ONC_Router = function (sliderSelector) {
-    var self =  this
+var ONC_Router = function (app) {
+    var self = this
 
+
+    self.app = app;
 
     //Initialisation des variables
     self.currentPage = null;
@@ -9,7 +11,7 @@ var ONC_Router = function (sliderSelector) {
     self.sliderSelector = "body";
     self.initialized = null;
     self.pagecontainer = new ONC_PageContainer();
-    
+
 
     //Intialize le router
     self.initialize = function (sliderSelector) {
@@ -20,8 +22,6 @@ var ONC_Router = function (sliderSelector) {
 
         //Initialisation des sous-composantes
         self.slider.initialize($(self.sliderSelector));
-               
-
 
 
         //Branchement sur l'evement de changement de hash du navigateur
@@ -45,6 +45,20 @@ var ONC_Router = function (sliderSelector) {
     };
 
 
+    /* Navige a l'url courant si definie, sinon accès a la page de démarrage nommée */
+    self.restore = function () {
+        if (window.location.hash == "") {
+            //Navigation sur la page initiale 
+            self.navigate(app.params.startpage);
+        }
+        else {
+            //Chargement de la vue citée dans l'url
+            self.route()
+        }
+
+    }
+
+
     //Au changement de hash operé sur le navigateur
     self.route = function (event, callback) {
         var page,
@@ -55,6 +69,12 @@ var ONC_Router = function (sliderSelector) {
             //Pas de hash ? on ne fait rien
             return;
         }
+
+
+        var markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
+        var classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
+
+
 
         //Avec parametres ?
         if (hash.indexOf("/") != -1) {
@@ -67,62 +87,85 @@ var ONC_Router = function (sliderSelector) {
             param = null;
         }
 
-        //reccherche par id, pages statiques 
-        var content = $(hash + "_page").html();
-        if (content != null) {
-            page = content;
-        }
-        else {
-            //On ne trouve pas le contenut
-            throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
-        }
+        //Récuperation du markup
+        $.ajax(markupPage)
+            .done(function (result) {
 
 
-        //Dechargement de la page courante
-        kernel.router.unloadCurrent(function () {
-
-            var $target = $(page);
-
-            //On slide vers cette nouvelle page
-            kernel.router.slider.slidePage($target, function () {
-                //On tente d'initialiser la nouvelle page
-                if (eval("typeof " + hash.substring(1, hash.length) + "_PageClass === 'undefined'") == false) {
-                    var pageInstance = eval("new " + hash.substring(1, hash.length) + "_PageClass()");
-
-                    kernel.router.currentPage = pageInstance;
-
-                    //Chargement de la page
-                    if (pageInstance != null && pageInstance.load != null) {
-                        pageInstance.load(param);
-                    }
+                if (result != null) {
+                    page = result;
+                }
+                else {
+                    //On ne trouve pas le contenut
+                    throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
                 }
 
-                //On Construit la pages 
-                kernel.router.pagecontainer.build();
 
 
-                //Affichage du contenu cible une fois construit
-                kernel.router.pagecontainer.showContent(function () {
-                    if (callback) callback();
+                //Dechargement de la page courante
+                self.unloadCurrent(function () {
+
+                    var $target = $(page);
+
+                    //On recherche l'id de page sur le makup
+                    pageId = $target.attr("id");
+                    if (pageId != null)
+                    {
+                        $.ajax(classfilePage)
+                          .done(function (result) {
+                              eval(result);
+                           
+                              //On tente d'initialiser la nouvelle page
+                              if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
+                                  var pageInstance = eval("new " + pageId + "_PageClass()");
+
+                                  self.currentPage = pageInstance;
+
+                                  //Chargement de la page
+                                  if (pageInstance != null && pageInstance.load != null) {
+                                      pageInstance.load(param);
+                                  }
+                              }
+                          }).fail(function (xhr, e) {
+                              self.app.onerror(e);
+                          }).always(function () {
+                              //On Construit la pages 
+                              self.pagecontainer.build();
+
+
+                              //Affichage du contenu cible une fois construit
+                              self.pagecontainer.showContent(function () {
+                                  if (callback) callback();
+                              });
+                          });
+                    }
+
+
+                 
+                    //On slide vers cette nouvelle page
+                    self.slider.slidePage($target);
+
                 });
 
 
+            }).fail(function (xhr, e) {
+                self.app.onerror(e);
             });
-        });
-    };
 
+    }
 
     self.unloadCurrent = function (callback) {
 
+
         //Si il y a déja une page en cours et qu'elle possede un destructeur => On la détruit
-        if (kernel.router.currentPage != null && kernel.router.currentPage.unload != null)
-            kernel.router.currentPage.unload();
+        if (self.currentPage != null && self.currentPage.unload != null)
+            self.currentPage.unload();
 
         //On decharge la page courante 
-        kernel.router.pagecontainer.destroy();
+        self.pagecontainer.destroy();
 
         //On reinitialise la notion de "page courante"
-        kernel.router.currentPage = null;
+        self.currentPage = null;
 
         if (callback) callback();
 
@@ -132,6 +175,7 @@ var ONC_Router = function (sliderSelector) {
 
     //Navigue sur le hash demandé
     self.navigate = function (hash, force, callback) {
+
         if (window.location.hash != hash) {
             window.location.hash = hash;
 

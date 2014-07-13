@@ -10,12 +10,24 @@ var ONC = function (params) {
     var defaultParams = {
         viewportSelector: "body",
         sliderSelector: ".pages",
-        configPath: "config.js"
+        configPath: "config.js",
+        markupPageExtension: ".html",
+        classfilePageExtension: ".js",
+        startpage : "pages/home"
     }
 
     /* Configuration du conteneur */
-    self.params = params == null ? defaultParams : params;
+    self.params = defaultParams;
 
+
+    //Incorporation des parametres de construction 
+    if (params != null)
+    {
+        for (var param in params)
+        {
+            self.params[param] = params[param];
+        }
+    }
 
     /* Boot de référence de l'application */
     self.boot = new ONC_Boot(self);
@@ -24,10 +36,10 @@ var ONC = function (params) {
     self.config = new ONC_Config(self);
 
     /* Gestionnaire de vue de référence */
-    self.viewport = new ONC_Viewport();
+    self.viewport = new ONC_Viewport(self);
 
     /* Routeur de référence */
-    self.router = new ONC_Router();
+    self.router = new ONC_Router(self);
 
     /*Démarre le conteneur */
     self.run = function (callback) {
@@ -52,6 +64,8 @@ var ONC = function (params) {
                     //Router 
                     self.router.initialize(self.params.sliderSelector);
 
+                    //Navigation initale 
+                    self.router.restore();
 
                     //Callabck final 
                     if (callback) callback();
