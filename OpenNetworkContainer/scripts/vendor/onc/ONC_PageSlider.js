@@ -28,7 +28,7 @@ function ONC_PageSlider(app) {
     /* Slide la page courante vers la pages suivante passée en parametres */
     self.slidePage = function (page, callback) {
 
-
+        
         var l = stateHistory.length;
         var state = window.location.hash;
         var from = null;
@@ -102,10 +102,8 @@ function ONC_PageSlider(app) {
 
     //#region Mode CSS3 Transition
 
-    self.slidePageModern = function (page, direction, callback) {
-     
-
-       
+    self.slidePageModern = function (page, direction, callback) {    
+               
         var PageTransitions = (function () {
 
             /*Mécanique interne*/
@@ -498,6 +496,7 @@ function ONC_PageSlider(app) {
                 else {
                     var $newpage = $("<div class='pt-page pt-page-2'></div>");
                     $newpage.append($targetPage);
+                 
                     container.append($newpage)
 
 
@@ -513,9 +512,8 @@ function ONC_PageSlider(app) {
 
         })();
 
-
         var anim = 1;
-        if (anim == "left") {
+        if (direction == "left") {
             anim = self.app.params.outAnimation;
         }
         else {
