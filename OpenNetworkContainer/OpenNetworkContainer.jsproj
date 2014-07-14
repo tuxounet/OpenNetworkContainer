@@ -189,7 +189,6 @@
     <Content Include="scripts\vendor\onc\ONC_Config.js" />
     <Content Include="scripts\vendor\onc\ONC_Logger.js" />
     <Content Include="scripts\vendor\onc\ONC_Page.js" />
-    <Content Include="scripts\vendor\onc\ONC_PageContainer.js" />
     <Content Include="scripts\vendor\onc\ONC_PageSlider.js" />
     <Content Include="scripts\vendor\onc\ONC_Router.js" />
     <Content Include="scripts\vendor\onc\ONC_Viewport.js" />

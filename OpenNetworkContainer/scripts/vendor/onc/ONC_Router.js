@@ -10,7 +10,7 @@ var ONC_Router = function (app) {
     self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
-    self.pagecontainer = new ONC_PageContainer();
+    
 
 
     //Intialize le router
@@ -118,16 +118,14 @@ var ONC_Router = function (app) {
                     }).done(function (result) {
                         //Chargement de la  définition de classe en mémoire
                         eval(result);
-                        
+
 
                     }).fail(function (xhr, e) {
                         self.app.onerror(e);
                     }).always(function () {
-                        
+
                         //On slide vers cette nouvelle page
-                        self.slider.slidePage($target, function () {                            
-                            //On Construit la pages 
-                            self.pagecontainer.build();
+                        self.slider.slidePage($target, function () {
 
                             //On tente d'initialiser la nouvelle page
                             if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
@@ -147,14 +145,7 @@ var ONC_Router = function (app) {
                             }
 
 
-                            //Affichage du contenu cible une fois construit
-                            self.pagecontainer.showContent(function () {
-                                if (callback) callback();
-                            });
-
                         });
-
-                  
 
                     });
                 }
@@ -167,7 +158,7 @@ var ONC_Router = function (app) {
 
 
 
-           
+
 
             });
 
@@ -184,11 +175,7 @@ var ONC_Router = function (app) {
         //Si il y a déja une page en cours et qu'elle possede un destructeur => On la détruit
         if (self.currentPage != null && self.currentPage.unload != null)
             self.currentPage.unload();
-
-        //On decharge la page courante 
-        self.pagecontainer.destroy();
-
-
+             
         //Débind
         if (self.currentPage != null && self.currentPage.unbind != null)
             self.currentPage.unbind();

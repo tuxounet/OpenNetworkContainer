@@ -51,7 +51,7 @@ var ONC_Boot = function (app) {
         if (app != null && app.onPause != null) document.addEventListener("pause", app.onPause, false);
         if (app != null && app.onResume != null) document.addEventListener("resume", app.onResume, false);
         if (app != null && app.onBackButton != null) document.addEventListener("backbutton", app.onBackButton, false);
-        if (app != null && app.onMenuButton != null) document.addEventListener("menubutton", bootapp.onMenuButton, false);
+        if (app != null && app.onMenuButton != null) document.addEventListener("menubutton", app.onMenuButton, false);
         self.startup();
     };
 
