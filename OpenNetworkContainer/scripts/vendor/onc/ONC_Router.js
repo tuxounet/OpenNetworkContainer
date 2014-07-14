@@ -116,42 +116,46 @@ var ONC_Router = function (app) {
                         url: classfilePage,
                         cache: false
                     }).done(function (result) {
-
+                        //Chargement de la  définition de classe en mémoire
                         eval(result);
-
-                        //On tente d'initialiser la nouvelle page
-                        if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
-                            var pageInstance = eval("new " + pageId + "_PageClass()");
-
-                            self.currentPage = pageInstance;
-
-                            //Binding de la page
-                            if (pageInstance != null && pageInstance.bind != null) {
-                                pageInstance.bind($target[0]);
-                            }
-
-                            //Chargement de la page
-                            if (pageInstance != null && pageInstance.load != null) {
-                                pageInstance.load(param);
-                            }
-                        }
-
+                        
 
                     }).fail(function (xhr, e) {
                         self.app.onerror(e);
                     }).always(function () {
-
+                        
                         //On slide vers cette nouvelle page
-                        self.slider.slidePage($target);
+                        self.slider.slidePage($target, function () {                            
+                            //On Construit la pages 
+                            self.pagecontainer.build();
 
-                        //On Construit la pages 
-                        self.pagecontainer.build();
+                            //On tente d'initialiser la nouvelle page
+                            if (eval("typeof " + pageId + "_PageClass === 'undefined'") == false) {
+                                var pageInstance = eval("new " + pageId + "_PageClass()");
+
+                                self.currentPage = pageInstance;
+
+                                //Binding de la page
+                                if (pageInstance != null && pageInstance.bind != null) {
+                                    pageInstance.bind($target[0]);
+                                }
+
+                                //Chargement de la page
+                                if (pageInstance != null && pageInstance.load != null) {
+                                    pageInstance.load(param);
+                                }
+                            }
 
 
-                        //Affichage du contenu cible une fois construit
-                        self.pagecontainer.showContent(function () {
-                            if (callback) callback();
+                            //Affichage du contenu cible une fois construit
+                            self.pagecontainer.showContent(function () {
+                                if (callback) callback();
+                            });
+
                         });
+
+                  
+
                     });
                 }
                 else {

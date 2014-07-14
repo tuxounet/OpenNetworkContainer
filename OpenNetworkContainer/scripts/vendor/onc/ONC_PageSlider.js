@@ -52,7 +52,7 @@ function ONC_PageSlider(app) {
         }
         else {
             //Mode complet, on fait des transiitons en CSS3
-            self.slidePage(page, from, callback);
+            self.slidePageModern(page, from, callback);
         }
     }
 
@@ -102,10 +102,10 @@ function ONC_PageSlider(app) {
 
     //#region Mode CSS3 Transition
 
-    self.slidePage = function (page, direction, callback) {
+    self.slidePageModern = function (page, direction, callback) {
      
 
-       container.css("-webkit-perspective", self.app.viewport.getScreenWidth());
+       
         var PageTransitions = (function () {
 
             /*Mécanique interne*/

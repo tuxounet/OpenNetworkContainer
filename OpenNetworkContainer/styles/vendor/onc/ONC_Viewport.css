@@ -4,19 +4,47 @@
     margin: 0;
 }
 
-.onc-viewport {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+
+.onc-viewport,
+.onc-viewport .pages,
+.onc-viewport .pages div[data-role=page] {
+    height: 100%;
 }
 
-    .onc-viewport .pt-perspective {
-    
-    position:relative
-    
-    
+    .onc-viewport .pages div[data-role=page] {
+        overflow: auto;
     }
 
 
+
+/* Gestion du off canvas */
+
+
+.onc-offcanvas,
+.onc-offcanvas .navmenu {
+    padding-top: 50px;
+}
+
+    .onc-offcanvas .container {
+        max-width: 100%;
+    }
+
+@media (min-width: 1px) {
+    .onc-offcanvas .navbar-toggle {
+        display: block !important;
+    }
+}
+
+@media (min-width: 992px) {
+    div[data-role=page].onc-offcanvas {
+        padding: 0 0 0 300px;
+    }
+
+    .onc-offcanvas .navmenu {
+        padding-top: 0;
+    }
+
+    .onc-offcanvas .navbar {
+        display: none !important; /* IE8 fix */
+    }
+}

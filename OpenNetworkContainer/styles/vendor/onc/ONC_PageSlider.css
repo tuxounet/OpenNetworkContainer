@@ -4269,12 +4269,11 @@
     -o-animation-delay: 1s;
     animation-delay: 1s;
 }
+
+
+
+
 /* Apparences de pages */
-html,
-body {
-    height: 100%;
-    overflow: hidden;
-}
 
 .pt-perspective {
     position: relative;
@@ -4292,8 +4291,8 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    right:0;
-    bottom:0px;
+    right: 0;
+    bottom: 0px;
     visibility: hidden;
     overflow: hidden;
     -webkit-backface-visibility: hidden;

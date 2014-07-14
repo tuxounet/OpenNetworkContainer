@@ -3,21 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <title>OpenNetworkContainer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
+    <!--Styles-->
+
+
+    <link href="styles/app/custom-bootstrap.css" rel="stylesheet" />
+    <link href="styles/vendor/bootstrap/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="styles/app/flatty-bootstrap-theme.css" rel="stylesheet" />
     <link href="styles/vendor/onc/ONC_Viewport.css" rel="stylesheet" />
     <link href="styles/vendor/onc/ONC_PageSlider.css" rel="stylesheet" />
+
+
 </head>
 <body>
 
+
+
     <!--Viewport -->
     <div id="viewport" class="onc-viewport">
-        <div class="controls" style="display: none;">
-
-        </div>
-        <div class="pages pt-perspective " style="display: none;">
+        <div class="pages">
         </div>
     </div>
-
 
 
 
@@ -25,14 +32,20 @@
     <script src="cordova.js"></script>
 
 
-    <!--Libs tierces-->
-    <script src="scripts/vendor/knockout-3.1.0.js"></script>
-    <script src="scripts/vendor/moment-with-langs.js"></script>
 
     <!--Dépendances ONC-->
     <script src="scripts/vendor/onc/dependencies/fastclick.js"></script>
     <script src="scripts/vendor/onc/dependencies/modernizr-2.7.2.js"></script>
-    <script src="scripts/vendor/onc/dependencies/jquery-2.1.0.min.js"></script>
+    <script src="scripts/vendor/onc/dependencies/jquery-1.11.0.min.js"></script>
+    <script src="scripts/vendor/onc/dependencies/jquery-migrate.1.2.1.min.js"></script>
+
+
+    <!--Libs tierces-->
+    <script src="scripts/vendor/knockout-3.1.0.js"></script>
+    <script src="scripts/vendor/moment-with-langs.js"></script>
+    <script src="scripts/vendor/bootstrap/bootstrap-3.1.1.min.js"></script>
+    <script src="scripts/vendor/bootstrap/jasny-bootstrap.min.js"></script>
+
 
     <!--Reférences ONC-->
     <script src="scripts/vendor/onc/ONC_PageSlider.js"></script>

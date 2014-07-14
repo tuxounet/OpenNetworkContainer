@@ -71,8 +71,8 @@
     self.onViewportResized = function () {
       
         //$("body").height(self.getScreenHeight());
-        self.$viewport.height(self.getScreenHeight());
-        self.$viewport.width(self.getScreenWidth());
+        //self.$viewport.height(self.getScreenHeight());
+        //self.$viewport.width(self.getScreenWidth());
      
 
     };

@@ -132,6 +132,8 @@
     <Content Include="pages\about.js" />
     <Content Include="pages\home.html" />
     <Content Include="pages\home.js" />
+    <Content Include="pages\kitchen-sink\responsive-tablet-layout.html" />
+    <Content Include="pages\kitchen-sink\responsive-tablet-layout.js" />
     <Content Include="res\cert\android\ant.properties" />
     <Content Include="res\icons\android\icon-36-ldpi.png" />
     <Content Include="res\icons\android\icon-48-mdpi.png" />
@@ -174,10 +176,13 @@
     <Content Include="res\screens\windows8\splashscreen.png" />
     <Content Include="res\screens\wp8\screen-portrait.jpg" />
     <Content Include="scripts\app\HelloWorldApp.js" />
+    <Content Include="scripts\vendor\bootstrap\bootstrap-3.1.1.min.js" />
+    <Content Include="scripts\vendor\bootstrap\jasny-bootstrap.min.js" />
     <Content Include="scripts\vendor\knockout-3.1.0.js" />
     <Content Include="scripts\vendor\moment-with-langs.js" />
     <Content Include="scripts\vendor\onc\dependencies\fastclick.js" />
-    <Content Include="scripts\vendor\onc\dependencies\jquery-2.1.0.min.js" />
+    <Content Include="scripts\vendor\onc\dependencies\jquery-1.11.0.min.js" />
+    <Content Include="scripts\vendor\onc\dependencies\jquery-migrate.1.2.1.min.js" />
     <Content Include="scripts\vendor\onc\dependencies\modernizr-2.7.2.js" />
     <Content Include="scripts\vendor\onc\ONC.js" />
     <Content Include="scripts\vendor\onc\ONC_Boot.js" />
@@ -190,6 +195,10 @@
     <Content Include="scripts\vendor\onc\ONC_Viewport.js" />
     <Content Include="scripts\_references.js" />
     <Content Include="server.js" />
+    <Content Include="styles\app\custom-bootstrap.css" />
+    <Content Include="styles\app\flatty-bootstrap-theme.css" />
+    <Content Include="styles\vendor\bootstrap\bootstrap-3.1.1.min.css" />
+    <Content Include="styles\vendor\bootstrap\jasny-bootstrap.min.css" />
     <Content Include="styles\vendor\onc\ONC_PageSlider.css" />
     <Content Include="styles\vendor\onc\ONC_Viewport.css" />
   </ItemGroup>
