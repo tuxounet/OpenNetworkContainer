@@ -103,6 +103,9 @@ function ONC_PageSlider(app) {
     //#region Mode CSS3 Transition
 
     self.slidePage = function (page, direction, callback) {
+     
+
+       container.css("-webkit-perspective", self.app.viewport.getScreenWidth());
         var PageTransitions = (function () {
 
             /*Mécanique interne*/
