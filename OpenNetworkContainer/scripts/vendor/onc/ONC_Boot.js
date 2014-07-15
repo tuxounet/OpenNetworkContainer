@@ -66,12 +66,15 @@ var ONC_Boot = function (app) {
         }
         else {
             //Test du mode legacy 
-            if (typeof Modernizr === "undefined" || Modernizr.csstransitions == null) {
+            if (typeof Modernizr === "undefined") {
                 //On ne peut pas tester, on passe en legacy
                 self.isLegacy = true;
             }
             else {
-                self.isLegacy = !Modernizr.csstransitions;
+                if (Modernizr.csstransitions == false)
+                    self.isLegacy = true;
+                else
+                    self.isLegacy = false;
             }
 
         }
