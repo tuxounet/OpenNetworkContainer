@@ -16,7 +16,8 @@ var ONC = function (params) {
         startpage: "pages/home",
         forceLegacy: false,
         inAnimation: 1,
-        outAnimation : 2
+        outAnimation: 2,
+        autoRestore : false
     }
 
     /* Configuration du conteneur */
@@ -24,10 +25,8 @@ var ONC = function (params) {
 
 
     //Incorporation des parametres de construction 
-    if (params != null)
-    {
-        for (var param in params)
-        {
+    if (params != null) {
+        for (var param in params) {
             self.params[param] = params[param];
         }
     }
@@ -134,6 +133,54 @@ var ONC = function (params) {
         ONC_Logger.error(ret);
 
         return true;
+    }
+    //#endregion
+
+    self.goBack = self.router.goBack;
+
+    self.loading = function (kind) {
+
+        ONC_Logger.log("APP: Loading : " + kind + "...")
+
+    }
+
+    self.complete = function (kind) {
+
+        ONC_Logger.log("APP: Completed : " + kind);
+
+    }
+
+
+    self.alert = function (message, title) {
+        alert(message, title);
+    }
+
+    self.confirm = function (message, title, ok, cancel) {
+        var ret = confirm(message, title);
+        if (ret == true) {
+            if (ok) ok();
+        }
+        else {
+            if (cancel) cancel();
+        }
+    }
+
+
+    self.restart = function () {
+        ONC_Logger.warn("Redémarrage de l'application");
+        //Redemarrage sur une page sans hash
+        var url = window.location.href.substring(0, window.location.href.indexOf("#"));
+        window.location.href = url;
+
+    }
+
+
+    //#region "Evenements applicaitfs"
+
+    self.started = function () {
+
+        ONC_Logger.log("ONC: Application démarrée");
+
     }
 
     //#endregion

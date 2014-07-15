@@ -184,6 +184,7 @@
     <Content Include="scripts\vendor\onc\dependencies\jquery-1.11.0.min.js" />
     <Content Include="scripts\vendor\onc\dependencies\jquery-migrate.1.2.1.min.js" />
     <Content Include="scripts\vendor\onc\dependencies\modernizr-2.7.2.js" />
+    <Content Include="scripts\vendor\onc\dependencies\url.js" />
     <Content Include="scripts\vendor\onc\ONC.js" />
     <Content Include="scripts\vendor\onc\ONC_Boot.js" />
     <Content Include="scripts\vendor\onc\ONC_Config.js" />

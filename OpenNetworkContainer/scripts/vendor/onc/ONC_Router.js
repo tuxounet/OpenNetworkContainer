@@ -10,7 +10,7 @@ var ONC_Router = function (app) {
     self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
-    
+
 
 
     //Intialize le router
@@ -47,14 +47,22 @@ var ONC_Router = function (app) {
 
     /* Navige a l'url courant si definie, sinon accès a la page de démarrage nommée */
     self.restore = function () {
-        if (window.location.hash == "") {
-            //Navigation sur la page initiale 
-            self.navigate(app.params.startpage);
+        //Si une page de démarrage est définie, on passe en mode Pages avec pushstate
+        if (self.app.params.autoRestore == true) {
+            if (window.location.hash == "") {
+                //Navigation sur la page initiale 
+                self.navigate(self.app.params.startpage);
+            }
+            else {
+                //Chargement de la vue citée dans l'url
+                self.route()
+            }
+
         }
         else {
-            //Chargement de la vue citée dans l'url
-            self.route()
+            //On laisse faire le callback de démarrage
         }
+
 
     }
 
@@ -63,7 +71,7 @@ var ONC_Router = function (app) {
     self.route = function (event, callback) {
         var page,
             hash = window.location.hash,
-            param;
+            param, markupPage, classfilePage;
 
         if (hash == "") {
             //Pas de hash ? on ne fait rien
@@ -71,21 +79,45 @@ var ONC_Router = function (app) {
         }
 
 
-        var markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
-        var classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
+       
+        //Avec parametres ?
+        if (window.url("?", hash) == "") {
+            param = null;
+           
+        }
+        else {
+            
+            var url = window.url("?", hash);
+            var pairs = url.split("&");
+            var data = {};
 
+            for (var i = 0; i < pairs.length; i++) {
+                pair = pairs[i];
+                separatorIndex = pair.indexOf("=");
 
+                if (separatorIndex === -1) {
+                    escapedKey = pair;
+                    escapedValue = null;
+                } else {
+                    escapedKey = pair.substr(0, separatorIndex);
+                    escapedValue = pair.substr(separatorIndex + 1);
+                }
 
-        ////Avec parametres ?
-        //if (hash.indexOf("/") != -1) {
-        //    //Extration des données
-        //    param = hash.substr(hash.indexOf("/") + 1, hash.length);
-        //    hash = hash.substr(0, hash.indexOf("/"));
-        //}
-        //else {
-        //    //Non, sans parametres
-        //    param = null;
-        //}
+                key = decodeURIComponent(escapedKey);
+                value = decodeURIComponent(escapedValue);
+
+                data[key] = value;
+            }
+
+            var pageName = hash.substring(0, hash.indexOf("?"));
+            hash = pageName;
+            param = data
+        }
+
+        //Definition des elements a charger
+        markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
+        classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
+
 
         //Récuperation du markup
         $.ajax({
@@ -175,7 +207,7 @@ var ONC_Router = function (app) {
         //Si il y a déja une page en cours et qu'elle possede un destructeur => On la détruit
         if (self.currentPage != null && self.currentPage.unload != null)
             self.currentPage.unload();
-             
+
         //Débind
         if (self.currentPage != null && self.currentPage.unbind != null)
             self.currentPage.unbind();

@@ -9,7 +9,7 @@
     };
 
 
-    self.config = defautConfig;
+    self.current = defautConfig;
 
 
     self.loadConfig = function (callback) {
@@ -20,12 +20,12 @@
         $.ajax(app.params.configPath)
             .done(function (result) {
                 eval(result);
-                self.config = config;
+                self.current = config;
                 ONC_Logger.log("ONC: Config chargée " + JSON.stringify(config));
             })
             .fail(function (xhr, e) {
                 ONC_Logger.error(e);
-                self.config = defautConfig;
+                self.current = defautConfig;
                 ONC_Logger.warn("ONC: Configuration introuvable, chargement de la config par défaut");
             })
             .always(function () {

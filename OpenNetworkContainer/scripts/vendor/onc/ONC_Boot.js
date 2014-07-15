@@ -57,11 +57,12 @@ var ONC_Boot = function (app) {
 
     //Processus de démarrage
     self.startup = function () {
-        ONC_Logger.log("ONC: Boot terminé");
+        
    
         //On demande de forcer le mode legacy 
         if (self.app.params.forceLegacy === true) {
             self.isLegacy = true;
+            
         }
         else {
             //Test du mode legacy 
@@ -74,7 +75,10 @@ var ONC_Boot = function (app) {
             }
 
         }
+        if (self.isLegacy == true)
+            ONC_Logger.warn("Mode Legacy");
 
+        ONC_Logger.log("ONC: Boot terminé");
         //Si il y a un callback de démarrage, on l'invoque
         if (initCallback != null) initCallback();
 

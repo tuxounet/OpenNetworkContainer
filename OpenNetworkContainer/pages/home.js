@@ -5,9 +5,4 @@ var home_PageClass = function () {
     ONC_Page.call(this);
 
     var self = this;
-
-
-
-
-
 };
