@@ -57,12 +57,12 @@ var ONC_Boot = function (app) {
 
     //Processus de démarrage
     self.startup = function () {
-        
-   
+
+
         //On demande de forcer le mode legacy 
         if (self.app.params.forceLegacy === true) {
             self.isLegacy = true;
-            
+
         }
         else {
             //Test du mode legacy 
@@ -75,6 +75,10 @@ var ONC_Boot = function (app) {
             }
 
         }
+
+        //Affichage des capacités du navigateur
+        ONC_Logger.log("DEBUG: Capacité du navigateur : " + $("html").attr("class"));
+
         if (self.isLegacy == true)
             ONC_Logger.warn("Mode Legacy");
 
