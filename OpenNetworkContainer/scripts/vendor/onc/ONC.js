@@ -17,7 +17,7 @@ var ONC = function (params) {
         forceLegacy: false,
         inAnimation: 1,
         outAnimation: 2,
-        autoRestore : false
+        autoRestore: true
     }
 
     /* Configuration du conteneur */
