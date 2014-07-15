@@ -1,4 +1,5 @@
 ﻿/// <reference path="dependencies/modernizr-2.7.2.js" />
+
 var ONC_Boot = function (app) {
 
     var self = this;
@@ -71,7 +72,7 @@ var ONC_Boot = function (app) {
                 self.isLegacy = true;
             }
             else {
-                if (Modernizr.csstransitions == false)
+                if (Modernizr.csstransforms3d == false)
                     self.isLegacy = true;
                 else
                     self.isLegacy = false;
