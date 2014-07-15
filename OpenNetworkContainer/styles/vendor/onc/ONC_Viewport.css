@@ -29,6 +29,15 @@
         max-width: 100%;
     }
 
+
+@media (max-width: 992px) {
+    .page,
+    .page .navmenu {
+        padding-top: 50px;
+    }
+}
+
+
 @media (min-width: 1px) {
     .onc-offcanvas .navbar-toggle {
         display: block !important;
@@ -36,13 +45,18 @@
 }
 
 @media (min-width: 992px) {
-    div[data-role=page].onc-offcanvas {
+    div[data-role=page].onc-offcanvas, 
+    .page {
         padding: 0 0 0 300px;
     }
+
+
 
     .onc-offcanvas .navmenu {
         padding-top: 0;
     }
+
+
 
     .onc-offcanvas .navbar {
         display: none !important; /* IE8 fix */

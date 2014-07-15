@@ -67,7 +67,7 @@ function ONC_PageSlider(app) {
         currentPage = $(".page.center", container);
 
         //Pas de page précédente, ajout brut
-        if (!currentPage || !from) {
+        if (!currentPage) {
             container.append(page);
 
             page.attr("class", "page center");
