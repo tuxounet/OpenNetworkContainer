@@ -21,6 +21,7 @@
 
 
 .onc-offcanvas,
+.no-onc-offcanvas,
 .onc-offcanvas .navmenu {
     padding-top: 50px;
 }
@@ -31,8 +32,10 @@
 
 
 @media (max-width: 992px) {
-    .page,
-    .page .navmenu {
+    .page,   
+    .page .navmenu,
+    ..no-onc-offcanvas,
+    .pt-page .navmenu {
         padding-top: 50px;
     }
 }
@@ -45,7 +48,7 @@
 }
 
 @media (min-width: 992px) {
-    div[data-role=page].onc-offcanvas, 
+    div[data-role=page].onc-offcanvas,
     .page {
         padding: 0 0 0 300px;
     }
