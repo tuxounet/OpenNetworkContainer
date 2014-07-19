@@ -118,6 +118,8 @@ var ONC_Router = function (app) {
         markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
         classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
 
+        self.app.loading("Chargement de la page " + hash);
+
 
         //Récuperation du markup
         $.ajax({
@@ -144,6 +146,8 @@ var ONC_Router = function (app) {
                 //On recherche l'id de page sur le makup
                 pageId = $target.attr("id");
                 if (pageId != null) {
+
+
                     $.ajax({
                         url: classfilePage,
                         cache: false
@@ -167,7 +171,7 @@ var ONC_Router = function (app) {
 
                                 //Binding de la page
                                 if (pageInstance != null && pageInstance.bind != null) {
-                                    pageInstance.bind($target[0]);
+                                    pageInstance.bind($target[0], self.app);
                                 }
 
                                 //Chargement de la page
@@ -184,6 +188,8 @@ var ONC_Router = function (app) {
                 else {
                     //On slide vers cette nouvelle page
                     self.slider.slidePage($target);
+                    //Masque le spinner
+                    self.app.complete();
 
 
                 }

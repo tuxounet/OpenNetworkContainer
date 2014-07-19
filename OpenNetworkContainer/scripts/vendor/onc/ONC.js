@@ -1,4 +1,5 @@
-﻿/// <reference path="ONC_Boot.js" />
+﻿/// <reference path="dependencies/spin.min.js" />
+/// <reference path="ONC_Boot.js" />
 /// <reference path="ONC_Config.js" />
 /// <reference path="ONC_Logger.js" />
 /// <reference path="ONC_Router.js" />
@@ -15,8 +16,8 @@ var ONC = function (params) {
         classfilePageExtension: ".js",
         startpage: "pages/home",
         forceLegacy: false,
-        inAnimation: 1,
-        outAnimation: 2,
+        inAnimation: 13,
+        outAnimation: 14,
         autoRestore: true
     }
 
@@ -43,6 +44,10 @@ var ONC = function (params) {
     /* Routeur de référence */
     self.router = new ONC_Router(self);
 
+
+    self.isLoading = false;
+    self.spinner = new Spinner();
+
     /*Démarre le conteneur */
     self.run = function (callback) {
 
@@ -59,6 +64,7 @@ var ONC = function (params) {
 
                     //Application de fastClick     
                     FastClick.attach(document.body);
+                                       
 
                     //Gestionnaire de vue                    
                     self.viewport.initialize(self.params.viewportSelector)
@@ -140,14 +146,30 @@ var ONC = function (params) {
 
     self.loading = function (kind) {
 
+        
         ONC_Logger.log("APP: Loading : " + kind + "...")
+        if (self.isLoading == false)
+        {
+            self.isLoading = true;
 
+            //Ajout du spiner        
+            self.spinner.spin();
+            document.body.appendChild(self.spinner.el);
+            
+        }
+        
     }
 
     self.complete = function (kind) {
 
         ONC_Logger.log("APP: Completed : " + kind);
+        if (self.isLoading == true)
+        {
 
+            self.spinner.stop();
+            self.isLoading = false; 
+        }
+        
     }
 
 
