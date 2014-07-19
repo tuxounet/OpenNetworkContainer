@@ -29,6 +29,8 @@
 
     self.load = function () {
         ONC_Logger.log("ONC: Page chargée");
+        //La méthode n'est pas surchargée, on invoque la completeion de chargement 
+        self.loadCompleted();
 
     }
 
