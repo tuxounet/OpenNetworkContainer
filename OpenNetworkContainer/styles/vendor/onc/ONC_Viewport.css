@@ -34,7 +34,7 @@
 @media (max-width: 992px) {
     .page,   
     .page .navmenu,
-    ..no-onc-offcanvas,
+    .no-onc-offcanvas,
     .pt-page .navmenu {
         padding-top: 50px;
     }
