@@ -2,7 +2,7 @@
     var self = this;
 
     self.DOM = null;
-    self.id = null; 
+    self.pageId = null;
 
     self.app = null;
 
@@ -14,7 +14,7 @@
         //Association de l'app courante
         self.app = app;
         //Id de la page 
-        self.id = pageId;
+        self.pageId = pageId;
 
         //On ne force pas ko 
         if (self.DOM && ko)
@@ -33,14 +33,13 @@
 
     self.load = function () {
      
-        ONC_Logger.log("ONC: Page chargée (" + self.id + ")");
+        ONC_Logger.log("ONC: Page chargée (" + self.pageId + ")");
         self.loadCompleted();
-
     }
 
     self.unload = function () {
 
-        ONC_Logger.log("ONC: Page déchargée (" + self.id + ")");
+        ONC_Logger.log("ONC: Page déchargée (" + self.pageId + ")");
     }
 
     self.loadCompleted = function () {
@@ -48,7 +47,7 @@
         //Masque le spinner
         if (self.app)
             self.app.complete();
-        ONC_Logger.log("ONC: Chargement Page terminé (" + self.id + ")");
+        ONC_Logger.log("ONC: Chargement Page terminé (" + self.pageId + ")");
 
     }
 

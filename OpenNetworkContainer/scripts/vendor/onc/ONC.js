@@ -14,6 +14,8 @@ var ONC = function (params) {
         configPath: "config.js",
         markupPageExtension: ".html",
         classfilePageExtension: ".js",
+        cssfilePageExtension: ".css",
+        cssFileLoadTimeout: 100,
         startpage: "pages/home",
         forceLegacy: false,
         inAnimation: 13,

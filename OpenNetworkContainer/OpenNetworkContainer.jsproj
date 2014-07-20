@@ -128,12 +128,15 @@
     <Content Include="others\StartNodeServer.cmd" />
     <Content Include="others\UpdateDataModel.cmd" />
     <Content Include="css\index.css" />
+    <Content Include="pages\about.css" />
     <Content Include="pages\about.html" />
     <Content Include="pages\about.js" />
     <Content Include="pages\home.html" />
     <Content Include="pages\home.js" />
+    <Content Include="pages\kitchen-sink\responsive-tablet-layout.css" />
     <Content Include="pages\kitchen-sink\responsive-tablet-layout.html" />
     <Content Include="pages\kitchen-sink\responsive-tablet-layout.js" />
+    <Content Include="pages\home.css" />
     <Content Include="res\cert\android\ant.properties" />
     <Content Include="res\icons\android\icon-36-ldpi.png" />
     <Content Include="res\icons\android\icon-48-mdpi.png" />

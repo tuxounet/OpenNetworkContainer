@@ -1,4 +1,6 @@
-﻿//Router basé sur le hashchange
+﻿/// <reference path="dependencies/yesnope.js" />
+/// <reference path="ONC.js" />
+//Router basé sur le hashchange
 var ONC_Router = function (app) {
     var self = this
 
@@ -117,8 +119,11 @@ var ONC_Router = function (app) {
         //Definition des elements a charger
         markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
         classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
+        cssFilePage = hash.substr(1, hash.length) + self.app.params.cssfilePageExtension;
 
         self.app.loading("Chargement de la page " + hash);
+
+
 
 
         //Récuperation du markup
@@ -136,81 +141,81 @@ var ONC_Router = function (app) {
                 throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
             }
 
-            //Dechargement de la page courante
-            self.unloadCurrent(function () {
 
-                var $target = $(page);
+            //inclusion du fichier CSS
 
-                //On recherche l'id de page sur le makup
-                pageId = $target.attr("id");
-                if (pageId != null) {
+            self.includeCSSFile(cssFilePage, function (result) {
+                         
+                //Dechargement de la page courante
+                self.unloadCurrent(function () {
 
+                    var $target = $(page);
 
-                    $.ajax({
-                        url: classfilePage,
-                        cache: false
-                    }).done(function (result) {
-
-                        ONC_Logger.log("ROUTER: Classfile récuperé (" + pageId + ")");
+                    //On recherche l'id de page sur le makup
+                    pageId = $target.attr("id");
+                    if (pageId != null) {
 
 
-                        ONC_Logger.log("ROUTER: Démarrage du sliding (" + pageId + ")");
+                        self.includeJSFile(classfilePage, function () {                     
 
-                        //On slide vers cette nouvelle page
-                        self.slider.slidePage($target, function () {
+                            ONC_Logger.log("ROUTER: Démarrage du sliding (" + pageId + ")");
 
-                            ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
+                            //On slide vers cette nouvelle page
+                            self.slider.slidePage($target, function () {
 
-                            //Chargement de la  définition de classe en mémoire
-                            eval(result);
+                                ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
 
-                            //On tente d'initialiser la nouvelle page
-                            if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
-                                var pageInstance = eval("new " + pageId + "_PageClass()");
+                                //On tente d'initialiser la nouvelle page
+                                if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
+                                    var pageInstance = eval("new " + pageId + "_PageClass()");
 
-                                self.currentPage = pageInstance;
+                                    self.currentPage = pageInstance;
 
-                                ONC_Logger.log("ROUTER: Page Instanciée (" + pageId + ")");
+                                    ONC_Logger.log("ROUTER: Page Instanciée (" + pageId + ")");
 
 
-                                //Binding de la page
-                                if (pageInstance != null && pageInstance.bind != null) {
-                                    pageInstance.bind($target[0], self.app, pageId);
+                                    //Binding de la page
+                                    if (pageInstance != null && pageInstance.bind != null) {
+                                        pageInstance.bind($target[0], self.app, pageId);
+                                    }
+
+                                    //Chargement de la page
+                                    if (pageInstance != null && pageInstance.load != null) {
+                                        pageInstance.load(param);
+                                    }
+                                }
+                                else {
+                                    ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + pageId + ")");
                                 }
 
-                                //Chargement de la page
-                                if (pageInstance != null && pageInstance.load != null) {
-                                    pageInstance.load(param);
-                                }
-                            }
-                            else {
-                                ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + pageId + ")");
-                            }
+                                if (callback) callback("OK");
 
+                            });
 
-                            if (callback) callback("OK");
+                        }, function () {
+
+                            //On slide malgré tout
+                            self.slider.slidePage($target);
+
+                            if (callback) callback("KO");
 
                         });
-
-                    }).fail(function (xhr, e) {
-                        self.app.onerror(e);
-
-                        //On slide malgré tout
+                    }
+                    else {
+                        ONC_Logger.log("ROUTER: Slide sans classfile " + hash);
+                        //On slide vers cette nouvelle page
                         self.slider.slidePage($target);
+                        //Masque le spinner
+                        self.app.complete();
 
-                        if (callback) callback("KO");
-                    });
-                }
-                else {
-                    ONC_Logger.log("ROUTER: Slide sans classfile " + hash);
-                    //On slide vers cette nouvelle page
-                    self.slider.slidePage($target);
-                    //Masque le spinner
-                    self.app.complete();
+                        if (callback) callback("OK");
+                    }
+                });
 
-                    if (callback) callback("OK");
-                }
-            });
+
+            })
+
+
 
 
         }).fail(function (xhr, e) {
@@ -269,6 +274,84 @@ var ONC_Router = function (app) {
     self.goBack = function () {
         window.history.back();
     };
+
+
+
+    /* Méthodes d'inclusion dynamique */
+    self.includeJSFile = function (url, win, fail) {
+
+        //On vérifie que l'inclusion n'est pas déja faite 
+
+        if ($("head script[src='" + url + "']").length == 0) {
+            //L'inclusion n'est pas faite
+
+            //Creation de la balise 
+            var tag = document.createElement("script");
+            tag.type = 'text/javascript';
+            tag.async = true;
+            tag.onload = function () {
+                //Script inclu et chargé
+                ONC_Logger.log("ROUTER: Script inclu et chargé " + url);
+                if (win) win();
+            };
+            tag.onerror = function (e) {
+                //Erreur de chargement du script
+                ONC_Logger.error("ROUTER: Erreur lors du chargement du script " + url);
+                if (fail) fail();
+
+            };
+            tag.src = url;
+            //Ajout de la balise a la page
+            document.getElementsByTagName('head')[0].appendChild(tag);
+        }
+        else {
+
+            //L'inclusion est déja faite
+            ONC_Logger.log("ROUTER: Script déjà inclus " + url);
+            if (win) win();
+        }
+    }
+
+
+    self.includeCSSFile = function (url, result) {
+
+        if ($("head style[data-url='" + url + "']").length == 0) {
+            //Chargement du style
+            $.ajax({
+                url: url,
+                cache: false
+            }).done(function (datas) {
+
+                //Style récupéré, inclusion dans le head 
+
+                var tag = $("<style></style>");
+                tag.attr("data-url", url);
+                tag.html(datas);
+                $("head").append(tag);
+
+                ONC_Logger.log("ROUTER: Fichier de style inclu " + url);
+                //Callback
+                if (result) result(true);
+
+            }).fail(function (e, xhr) {
+                //Erreur de chargement du script
+                ONC_Logger.error("ROUTER: Erreur lors du chargement du fichier de style " + url);
+                if (result) result(false);
+            })
+        }
+        else {
+            //L'inclusion est déja faite
+            ONC_Logger.log("ROUTER: Style déjà inclus " + url);
+            if (result) result(true);
+
+        }
+
+
+
+
+    }
+
+
 
 };
 
