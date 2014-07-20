@@ -139,7 +139,7 @@ var ONC = function (params) {
 
         var ret = 'EXCEPTION: Error message: ' + msg + '\nURL: ' + url + ":" + linenumber;
         ONC_Logger.error(ret);
-
+        self.alert(ret);
         return true;
     }
     //#endregion
@@ -204,6 +204,7 @@ var ONC = function (params) {
     self.started = function () {
 
         ONC_Logger.log("ONC: Application démarrée");
+        
 
     }
 
