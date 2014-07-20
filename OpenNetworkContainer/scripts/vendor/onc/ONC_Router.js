@@ -159,7 +159,7 @@ var ONC_Router = function (app) {
                         //On slide vers cette nouvelle page
                         self.slider.slidePage($target, function () {
 
-                            ONC_Logger.log("ROUTER: Page slidée");
+                            ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
 
                             //Chargement de la  définition de classe en mémoire
                             eval(result);
@@ -175,7 +175,7 @@ var ONC_Router = function (app) {
 
                                 //Binding de la page
                                 if (pageInstance != null && pageInstance.bind != null) {
-                                    pageInstance.bind($target[0], self.app);
+                                    pageInstance.bind($target[0], self.app, pageId);
                                 }
 
                                 //Chargement de la page
@@ -188,6 +188,8 @@ var ONC_Router = function (app) {
                             }
 
 
+                            if (callback) callback("OK");
+
                         });
 
                     }).fail(function (xhr, e) {
@@ -195,27 +197,25 @@ var ONC_Router = function (app) {
 
                         //On slide malgré tout
                         self.slider.slidePage($target);
+
+                        if (callback) callback("KO");
                     });
                 }
                 else {
-                    ONC_Logger.log("ROUTER: Slide sans classfile");
+                    ONC_Logger.log("ROUTER: Slide sans classfile " + hash);
                     //On slide vers cette nouvelle page
                     self.slider.slidePage($target);
                     //Masque le spinner
                     self.app.complete();
 
-
+                    if (callback) callback("OK");
                 }
-
-
-
-
-
             });
 
 
         }).fail(function (xhr, e) {
             self.app.onerror(e);
+            if (callback) callback("KO");
         });
 
     }

@@ -12,10 +12,31 @@
 }
 
     .onc-viewport .pages div[data-role=page] {
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .onc-viewport .pages div[data-role=content] {
+        padding-top: 10px;
     }
 
 
+/*Mode legacy */
+.touch .onc-legacy {
+    height: auto;
+}
+
+    .touch .onc-legacy,
+    .touch .onc-legacy .onc-viewport,
+    .touch .onc-legacy .onc-viewport .pages,
+    .touch .onc-legacy .onc-viewport .pages div[data-role=page] {
+        height: auto;
+    }
+
+
+        .touch .onc-legacy .onc-viewport .pages div[data-role=page] {
+            overflow: auto;
+        }
 
 /* Gestion du off canvas */
 
@@ -32,7 +53,7 @@
 
 
 @media (max-width: 992px) {
-    .page,   
+    .page,
     .page .navmenu,
     .no-onc-offcanvas,
     .pt-page .navmenu {
@@ -53,6 +74,9 @@
         padding: 0 0 0 300px;
     }
 
+    .onc-viewport .pages div[data-role=content] {
+        padding-top: 0px;
+    }
 
 
     .onc-offcanvas .navmenu {
