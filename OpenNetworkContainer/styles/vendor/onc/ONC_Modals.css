@@ -1,0 +1,39 @@
+﻿.onc-modal-background {
+    height: 100%;
+    width: 100%;
+    z-index: 1080;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0.4;
+    background-color: #eee;
+}
+
+
+
+.onc-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2000;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background-color: #fff;
+    margin: 15px;
+}
+
+
+
+.onc-modal .onc-modal-title {
+    width:100%;    
+}
+
+.onc-modal .onc-modal-content {
+    height: 100%;
+    overflow-y: auto;
+}

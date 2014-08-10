@@ -4,6 +4,9 @@
     margin: 0;
 }
 
+.onc-viewport .navmenu-brand {
+    cursor: pointer;
+}
 
 .onc-viewport,
 .onc-viewport .pages,
@@ -13,7 +16,7 @@
 
     .onc-viewport .pages div[data-role=page] {
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     .onc-viewport .pages div[data-role=content] {
@@ -74,9 +77,6 @@
         padding: 0 0 0 300px;
     }
 
-    .onc-viewport .pages div[data-role=content] {
-        padding-top: 0px;
-    }
 
 
     .onc-offcanvas .navmenu {

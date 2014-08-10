@@ -121,12 +121,9 @@
     </Content>
     <Content Include="index.html" />
     <Content Include="others\AndroidDebugView.cmd" />
-    <Content Include="others\CommandLine.dll" />
     <Content Include="others\config\config.debug.js" />
     <Content Include="others\config\config.release.js" />
-    <Content Include="others\JaySvcUtil.exe" />
     <Content Include="others\StartNodeServer.cmd" />
-    <Content Include="others\UpdateDataModel.cmd" />
     <Content Include="css\index.css" />
     <Content Include="pages\about.css" />
     <Content Include="pages\about.html" />
@@ -137,6 +134,12 @@
     <Content Include="pages\kitchen-sink\responsive-tablet-layout.html" />
     <Content Include="pages\kitchen-sink\responsive-tablet-layout.js" />
     <Content Include="pages\home.css" />
+    <Content Include="pages\tests\modals.css" />
+    <Content Include="pages\tests\modals.html" />
+    <Content Include="pages\tests\modals.js" />
+    <Content Include="pages\tests\textarea.css" />
+    <Content Include="pages\tests\textarea.html" />
+    <Content Include="pages\tests\textarea.js" />
     <Content Include="res\cert\android\ant.properties" />
     <Content Include="res\icons\android\icon-36-ldpi.png" />
     <Content Include="res\icons\android\icon-48-mdpi.png" />
@@ -193,6 +196,7 @@
     <Content Include="scripts\vendor\onc\ONC_Boot.js" />
     <Content Include="scripts\vendor\onc\ONC_Config.js" />
     <Content Include="scripts\vendor\onc\ONC_Logger.js" />
+    <Content Include="scripts\vendor\onc\ONC_Modal.js" />
     <Content Include="scripts\vendor\onc\ONC_Page.js" />
     <Content Include="scripts\vendor\onc\ONC_PageSlider.js" />
     <Content Include="scripts\vendor\onc\ONC_Router.js" />
@@ -203,6 +207,7 @@
     <Content Include="styles\app\flatty-bootstrap-theme.css" />
     <Content Include="styles\vendor\bootstrap\bootstrap-3.1.1.min.css" />
     <Content Include="styles\vendor\bootstrap\jasny-bootstrap.min.css" />
+    <Content Include="styles\vendor\onc\ONC_Modals.css" />
     <Content Include="styles\vendor\onc\ONC_PageSlider.css" />
     <Content Include="styles\vendor\onc\ONC_Viewport.css" />
   </ItemGroup>

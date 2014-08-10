@@ -103,7 +103,7 @@ var ONC = function (params) {
     self.onBackButton = function () {
         ONC_Logger.log("BackButton");
 
-        self.router.goBack();
+        return self.router.goBack();
 
     };
     self.onMenuButton = function () {

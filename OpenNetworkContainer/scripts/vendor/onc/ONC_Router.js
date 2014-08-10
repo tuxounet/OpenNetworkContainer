@@ -145,7 +145,7 @@ var ONC_Router = function (app) {
             //inclusion du fichier CSS
 
             self.includeCSSFile(cssFilePage, function (result) {
-                         
+
                 //Dechargement de la page courante
                 self.unloadCurrent(function () {
 
@@ -156,7 +156,7 @@ var ONC_Router = function (app) {
                     if (pageId != null) {
 
 
-                        self.includeJSFile(classfilePage, function () {                     
+                        self.includeJSFile(classfilePage, function () {
 
                             ONC_Logger.log("ROUTER: Démarrage du sliding (" + pageId + ")");
 
@@ -269,10 +269,88 @@ var ONC_Router = function (app) {
     };
 
 
+    /* Indique si une modale est présente */
+    self.hasModal = function () {        
+        if ($(".onc-modal", self.app.viewport.$viewport).length > 0)
+            return true;
+        else
+            return false;
+
+    }
+
+
+    /* Affiche un bloc modal */
+    self.showModal = function (html, viewmodel, callback) {
+
+
+        var $modal = $(html);
+        if ($modal.hasClass("onc-modal") == false) {
+            throw "ROUTER: La modale n'est pas compatible";
+        }
+
+        //Ajout du voile si besoin au viewport
+        if ($(".onc-modal-background", self.app.viewport.$viewport).length == 0) {
+            var voile = "<div class='onc-modal-background'></div>";
+            self.app.viewport.$viewport.append(voile);
+        }
+
+        //Affichage de la modale
+        self.app.viewport.$viewport.append($modal);
+
+
+        //Binding du viewmodel 
+        if (viewmodel != null && viewmodel.bind != null) viewmodel.bind($modal[0], self.app);
+
+
+
+
+    }
+
+    /* Masque un block Modal */
+    self.hideModal = function () {
+
+        if (self.hasModal() == false) {
+            //Pas de modal en cours, sortie; 
+            return;
+        }
+        //Suppression de la modale 
+        if ($(".onc-modal", self.app.viewport.$viewport).length == 1) {
+
+            //Extraction du VM si existant 
+            var modal = $(".onc-modal", self.app.viewport.$viewport)[0];
+            var vm = ko.dataFor(modal);
+
+            //Debinding
+            if (vm != null && vm.unbind != null) vm.unbind();
+
+            //Suppression
+            $(modal).remove();
+
+            //Suppression du voile
+            if ($(".onc-modal-background", self.app.viewport.$viewport).length == 1) {
+                $(".onc-modal-background", self.app.viewport.$viewport).remove();
+            }
+        }
+
+
+
+
+    }
+
 
     //Va sur la page précédente du navigateur 
     self.goBack = function () {
-        window.history.back();
+        if (self.hasModal()) {
+            //Si il y a une modale, on la close 
+            self.hideModal();
+
+        }
+        else {
+            //Retour conventionnel 
+            window.history.back();
+        }
+
+        return false;
     };
 
 
