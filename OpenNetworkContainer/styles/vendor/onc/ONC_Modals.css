@@ -31,9 +31,18 @@
 
 .onc-modal .onc-modal-title {
     width:100%;    
+    position:absolute; 
+    top: 0;
+    right:0; 
+    left:0; 
+    background-color: #fff;
+    height: 50px;
 }
 
 .onc-modal .onc-modal-content {
     height: 100%;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top : 50px; 
+
 }
