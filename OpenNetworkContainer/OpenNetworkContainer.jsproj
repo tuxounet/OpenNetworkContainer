@@ -123,6 +123,7 @@
     <Content Include="others\AndroidDebugView.cmd" />
     <Content Include="others\config\config.debug.js" />
     <Content Include="others\config\config.release.js" />
+    <Content Include="others\ExportONC.cmd" />
     <Content Include="others\StartNodeServer.cmd" />
     <Content Include="css\index.css" />
     <Content Include="pages\about.css" />
