@@ -1,4 +1,5 @@
-﻿/// <reference path="dependencies/yesnope.js" />
+﻿/// <reference path="dependencies/overthrow.js" />
+/// <reference path="dependencies/yesnope.js" />
 /// <reference path="ONC.js" />
 //Router basé sur le hashchange
 var ONC_Router = function (app) {
@@ -9,6 +10,7 @@ var ONC_Router = function (app) {
 
     //Initialisation des variables
     self.currentPage = null;
+    self.currentPageDOM = null; 
     self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
@@ -146,8 +148,11 @@ var ONC_Router = function (app) {
 
             self.includeCSSFile(cssFilePage, function (result) {
 
+
+
+                
                 //Dechargement de la page courante
-                self.unloadCurrent(function () {
+                self.unloadCurrent(self.currentPageDOM, function () {
 
                     var $target = $(page);
 
@@ -165,6 +170,9 @@ var ONC_Router = function (app) {
 
                                 ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
 
+                                //Assignation du nouveau "dom de la page courante"
+                                self.currentPageDOM = $target[0];
+                                
                                 //On tente d'initialiser la nouvelle page
                                 if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
                                     var pageInstance = eval("new " + pageId + "_PageClass()");
@@ -187,6 +195,13 @@ var ONC_Router = function (app) {
                                 else {
                                     ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + pageId + ")");
                                 }
+
+                                //Activation de l'overthrow
+                                if (self.app.params.useOverthrow == true)
+                                {
+                                    overthrow.onc_setOnDOM($target[0]);
+                                }
+
 
                                 if (callback) callback("OK");
 
@@ -225,7 +240,13 @@ var ONC_Router = function (app) {
 
     }
 
-    self.unloadCurrent = function (callback) {
+    self.unloadCurrent = function (dom, callback) {
+
+        //Désactivation de l'overthrow
+        if (self.app.params.useOverthrow == true) {
+            overthrow.onc_destroyOnDOM(dom);
+        }
+
 
 
         //Si il y a déja une page en cours et qu'elle possede un destructeur => On la détruit

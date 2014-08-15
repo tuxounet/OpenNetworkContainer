@@ -20,7 +20,8 @@ var ONC = function (params) {
         forceLegacy: false,
         inAnimation: 13,
         outAnimation: 14,
-        autoRestore: true
+        autoRestore: true,
+        useOverthrow: true
     }
 
     /* Configuration du conteneur */
@@ -66,7 +67,7 @@ var ONC = function (params) {
 
                     //Application de fastClick     
                     FastClick.attach(document.body);
-                                       
+
 
                     //Gestionnaire de vue                    
                     self.viewport.initialize(self.params.viewportSelector)
@@ -148,30 +149,28 @@ var ONC = function (params) {
 
     self.loading = function (kind) {
 
-        
+
         ONC_Logger.log("APP: Loading : " + kind + "...")
-        if (self.isLoading == false)
-        {
+        if (self.isLoading == false) {
             self.isLoading = true;
 
             //Ajout du spiner        
             self.spinner.spin();
             document.body.appendChild(self.spinner.el);
-            
+
         }
-        
+
     }
 
     self.complete = function (kind) {
 
         ONC_Logger.log("APP: Completed : " + kind);
-        if (self.isLoading == true)
-        {
+        if (self.isLoading == true) {
 
             self.spinner.stop();
-            self.isLoading = false; 
+            self.isLoading = false;
         }
-        
+
     }
 
 
@@ -204,7 +203,7 @@ var ONC = function (params) {
     self.started = function () {
 
         ONC_Logger.log("ONC: Application démarrée");
-        
+
 
     }
 

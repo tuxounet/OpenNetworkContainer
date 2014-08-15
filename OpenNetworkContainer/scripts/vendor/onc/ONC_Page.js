@@ -21,6 +21,8 @@
             ko.applyBindings(self, self.DOM);
 
 
+
+
     }
 
 

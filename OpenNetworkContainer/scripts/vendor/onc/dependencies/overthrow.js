@@ -424,7 +424,19 @@
 /*! Overthrow. An overflow:auto polyfill for responsive design. (c) 2012: Scott Jehl, Filament Group, Inc. http://filamentgroup.github.com/Overthrow/license.txt */
 (function (w, undefined) {
 
-    // Auto-init
-    w.overthrow.set();
+    //Methodes custo pour être integré au cycle de vie du router
+    w.overthrow.onc_setOnDOM = function (domElement)
+    {
+        if(w.overthrow.support )
+        console.log("OVERTHROW:  SET SUR DOM");
+    }
+
+
+    w.overthrow.onc_destroyOnDOM = function (domElement)
+    {
+        console.log("OVERTHROW:  DESTROY SUR DOM");
+
+    }
+
 
 }(this));
