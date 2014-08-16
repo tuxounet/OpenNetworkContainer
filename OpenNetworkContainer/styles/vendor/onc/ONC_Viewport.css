@@ -57,6 +57,42 @@
     }
 
 
+    .onc-offcanvas .navbar-default {
+        background-color: #3498db !important;
+    }
+
+        .onc-offcanvas .navbar-default .navbar-brand {
+            color: #fff;
+        }
+
+        .onc-offcanvas .navmenu-default,
+        .onc-offcanvas .navbar-default,
+        .onc-offcanvas .navbar-default .navbar-offcanvas {
+            background-color: #3498db !important;
+        }
+
+
+            .onc-offcanvas .navmenu-default .navmenu-nav > li > a {
+                color: #fff;
+            }
+
+
+            .onc-offcanvas .navmenu-default .navmenu-nav > .active > a,
+            .onc-offcanvas .navbar-default .navbar-offcanvas .navmenu-nav > .active > a,
+            .onc-offcanvas .navmenu-default .navmenu-nav > .active > a:hover,
+            .onc-offcanvas .navbar-default .navbar-offcanvas .navmenu-nav > .active > a:hover,
+            .onc-offcanvas .navmenu-default .navmenu-nav > .active > a:focus,
+            .onc-offcanvas .navbar-default .navbar-offcanvas .navmenu-nav > .active > a:focus {
+                color: #555;
+            }
+
+
+            .onc-offcanvas .navmenu-default .navmenu-brand,
+            .onc-offcanvas .navbar-default .navbar-offcanvas .navmenu-brand {
+                color: #fff;
+            }
+
+
 @media (max-width: 992px) {
     .page,
     .page .navmenu,
@@ -84,6 +120,11 @@
     .onc-offcanvas .navmenu {
         padding-top: 0;
     }
+
+
+
+
+
 
 
 

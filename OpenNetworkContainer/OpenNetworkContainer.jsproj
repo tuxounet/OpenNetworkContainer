@@ -131,9 +131,6 @@
     <Content Include="pages\about.js" />
     <Content Include="pages\home.html" />
     <Content Include="pages\home.js" />
-    <Content Include="pages\kitchen-sink\responsive-tablet-layout.css" />
-    <Content Include="pages\kitchen-sink\responsive-tablet-layout.html" />
-    <Content Include="pages\kitchen-sink\responsive-tablet-layout.js" />
     <Content Include="pages\home.css" />
     <Content Include="pages\tests\modals.css" />
     <Content Include="pages\tests\modals.html" />
@@ -205,10 +202,8 @@
     <Content Include="scripts\vendor\onc\ONC_Viewport.js" />
     <Content Include="scripts\_references.js" />
     <Content Include="server.js" />
-    <Content Include="styles\app\custom-bootstrap.css" />
-    <Content Include="styles\app\flatty-bootstrap-theme.css" />
-    <Content Include="styles\vendor\bootstrap\bootstrap-3.1.1.min.css" />
-    <Content Include="styles\vendor\bootstrap\jasny-bootstrap.min.css" />
+    <Content Include="styles\vendor\onc\dependencies\bootstrap-3.1.1.min.css" />
+    <Content Include="styles\vendor\onc\dependencies\jasny-bootstrap.custom.css" />
     <Content Include="styles\vendor\onc\ONC_Modals.css" />
     <Content Include="styles\vendor\onc\ONC_PageSlider.css" />
     <Content Include="styles\vendor\onc\ONC_Viewport.css" />
