@@ -70,7 +70,9 @@ function ONC_PageSlider(app) {
         if (!currentPage) {
             container.append(page);
 
-            page.attr("class", "page center");
+            page.addClass("page")
+            page.addClass("center");
+
             currentPage = page;
 
             if (callback != null) callback();
@@ -89,7 +91,9 @@ function ONC_PageSlider(app) {
         page.fadeIn("slow", function () {
             //Suppression du dom de la page précédente
             currentPage.remove();
-            page.attr("class", "page center");
+            page.addClass("page")
+            page.addClass("center");
+            
 
             if (callback != null) callback();
         });
