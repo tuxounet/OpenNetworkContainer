@@ -20,8 +20,7 @@ var ONC = function (params) {
         forceLegacy: false,
         inAnimation: 13,
         outAnimation: 14,
-        autoRestore: true,
-        useOverthrow: true
+        autoRestore: true        
     }
 
     /* Configuration du conteneur */

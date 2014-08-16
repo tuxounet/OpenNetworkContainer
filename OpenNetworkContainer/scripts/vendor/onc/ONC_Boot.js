@@ -80,6 +80,10 @@ var ONC_Boot = function (app) {
 
         }
 
+        //UserAgent
+        ONC_Logger.log("DEBUG: UserAgent " + navigator.userAgent);
+
+             
         //Affichage des capacités du navigateur
         ONC_Logger.log("DEBUG: Capacité du navigateur : " + $("html").attr("class"));
 
@@ -89,8 +93,7 @@ var ONC_Boot = function (app) {
             ONC_Logger.warn("Mode Legacy");
         }
         
-
-
+                        
         ONC_Logger.log("ONC: Boot terminé");
         //Si il y a un callback de démarrage, on l'invoque
         if (initCallback != null) initCallback();

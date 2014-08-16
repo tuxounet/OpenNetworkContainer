@@ -10,7 +10,7 @@ var ONC_Router = function (app) {
 
     //Initialisation des variables
     self.currentPage = null;
-    self.currentPageDOM = null; 
+    self.currentPageDOM = null;
     self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
@@ -150,7 +150,7 @@ var ONC_Router = function (app) {
 
 
 
-                
+
                 //Dechargement de la page courante
                 self.unloadCurrent(self.currentPageDOM, function () {
 
@@ -172,7 +172,7 @@ var ONC_Router = function (app) {
 
                                 //Assignation du nouveau "dom de la page courante"
                                 self.currentPageDOM = $target[0];
-                                
+
                                 //On tente d'initialiser la nouvelle page
                                 if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
                                     var pageInstance = eval("new " + pageId + "_PageClass()");
@@ -197,8 +197,7 @@ var ONC_Router = function (app) {
                                 }
 
                                 //Activation de l'overthrow
-                                if (self.app.params.useOverthrow == true)
-                                {
+                                if (self.app.params.useOverthrow == true) {
                                     overthrow.onc_setOnDOM($target[0]);
                                 }
 
@@ -242,10 +241,6 @@ var ONC_Router = function (app) {
 
     self.unloadCurrent = function (dom, callback) {
 
-        //Désactivation de l'overthrow
-        if (self.app.params.useOverthrow == true) {
-            overthrow.onc_destroyOnDOM(dom);
-        }
 
 
 
@@ -288,11 +283,11 @@ var ONC_Router = function (app) {
             }
         }
     };
-    
+
     /*  Ajout du voile si besoin au viewport */
     self.showModalBackground = function () {
 
-      
+
         if ($(".onc-modal-background", self.app.viewport.$viewport).length == 0) {
             var voile = "<div class='onc-modal-background'></div>";
             self.app.viewport.$viewport.append(voile);
@@ -301,7 +296,7 @@ var ONC_Router = function (app) {
 
     /*Suppression du voile */
     self.hideModalBackground = function () {
-        
+
         if ($(".onc-modal-background", self.app.viewport.$viewport).length == 1) {
             $(".onc-modal-background", self.app.viewport.$viewport).remove();
         }
@@ -309,7 +304,7 @@ var ONC_Router = function (app) {
     }
 
     /* Indique si une modale est présente */
-    self.hasModal = function () {        
+    self.hasModal = function () {
         if ($(".onc-modal", self.app.viewport.$viewport).length > 0)
             return true;
         else
@@ -320,17 +315,20 @@ var ONC_Router = function (app) {
 
     /* Affiche un bloc modal */
     self.showModal = function (html, viewmodel, callback) {
-        
+
         var $modal = $(html);
         if ($modal.hasClass("onc-modal") == false) {
             throw "ROUTER: La modale n'est pas compatible";
         }
 
-        self.showModalBackground(); 
+        self.showModalBackground();
 
         //Affichage de la modale
         self.app.viewport.$viewport.append($modal);
 
+        //Si il n'y a pas de viewmodel
+        if (viewmodel == null)
+            new OverflowScrollFallback().setOnDOM($(".onc-modal-content", $modal)[0]);
 
         //Binding du viewmodel 
         if (viewmodel != null && viewmodel.bind != null) viewmodel.bind($modal[0], self.app);

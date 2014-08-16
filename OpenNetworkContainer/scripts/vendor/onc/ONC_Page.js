@@ -19,10 +19,6 @@
         //On ne force pas ko 
         if (self.DOM && ko)
             ko.applyBindings(self, self.DOM);
-
-
-
-
     }
 
 
@@ -49,6 +45,7 @@
         //Masque le spinner
         if (self.app)
             self.app.complete();
+
         ONC_Logger.log("ONC: Chargement Page terminé (" + self.pageId + ")");
 
     }
