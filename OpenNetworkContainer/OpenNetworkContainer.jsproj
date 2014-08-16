@@ -202,6 +202,10 @@
     <Content Include="server.js" />
     <Content Include="styles\vendor\onc\dependencies\bootstrap-3.1.1.min.css" />
     <Content Include="styles\vendor\onc\dependencies\jasny-bootstrap.custom.css" />
+    <Content Include="styles\vendor\onc\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="styles\vendor\onc\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="styles\vendor\onc\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="styles\vendor\onc\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="styles\vendor\onc\ONC_Modals.css" />
     <Content Include="styles\vendor\onc\ONC_PageSlider.css" />
     <Content Include="styles\vendor\onc\ONC_Viewport.css" />
