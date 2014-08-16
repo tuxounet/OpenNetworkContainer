@@ -154,9 +154,13 @@ var ONC = function (params) {
         if (self.isLoading == false) {
             self.isLoading = true;
 
+            //Ajout du voile
+            self.router.showModalBackground();
+
             //Ajout du spiner        
             self.spinner.spin();
             document.body.appendChild(self.spinner.el);
+            
 
         }
 
@@ -169,6 +173,9 @@ var ONC = function (params) {
 
             self.spinner.stop();
             self.isLoading = false;
+
+            //Suprresion du voile 
+            self.router.hideModalBackground();
         }
 
     }

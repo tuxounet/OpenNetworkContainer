@@ -288,7 +288,25 @@ var ONC_Router = function (app) {
             }
         }
     };
+    
+    /*  Ajout du voile si besoin au viewport */
+    self.showModalBackground = function () {
 
+      
+        if ($(".onc-modal-background", self.app.viewport.$viewport).length == 0) {
+            var voile = "<div class='onc-modal-background'></div>";
+            self.app.viewport.$viewport.append(voile);
+        }
+    }
+
+    /*Suppression du voile */
+    self.hideModalBackground = function () {
+        
+        if ($(".onc-modal-background", self.app.viewport.$viewport).length == 1) {
+            $(".onc-modal-background", self.app.viewport.$viewport).remove();
+        }
+
+    }
 
     /* Indique si une modale est présente */
     self.hasModal = function () {        
@@ -302,18 +320,13 @@ var ONC_Router = function (app) {
 
     /* Affiche un bloc modal */
     self.showModal = function (html, viewmodel, callback) {
-
-
+        
         var $modal = $(html);
         if ($modal.hasClass("onc-modal") == false) {
             throw "ROUTER: La modale n'est pas compatible";
         }
 
-        //Ajout du voile si besoin au viewport
-        if ($(".onc-modal-background", self.app.viewport.$viewport).length == 0) {
-            var voile = "<div class='onc-modal-background'></div>";
-            self.app.viewport.$viewport.append(voile);
-        }
+        self.showModalBackground(); 
 
         //Affichage de la modale
         self.app.viewport.$viewport.append($modal);
@@ -321,10 +334,6 @@ var ONC_Router = function (app) {
 
         //Binding du viewmodel 
         if (viewmodel != null && viewmodel.bind != null) viewmodel.bind($modal[0], self.app);
-
-
-
-
     }
 
     /* Masque un block Modal */
@@ -347,15 +356,9 @@ var ONC_Router = function (app) {
             //Suppression
             $(modal).remove();
 
-            //Suppression du voile
-            if ($(".onc-modal-background", self.app.viewport.$viewport).length == 1) {
-                $(".onc-modal-background", self.app.viewport.$viewport).remove();
-            }
+            self.hideModalBackground();
+
         }
-
-
-
-
     }
 
 
