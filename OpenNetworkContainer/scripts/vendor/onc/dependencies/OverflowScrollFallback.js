@@ -1,4 +1,4 @@
-﻿OverflowScrollFallback = function (element) {
+﻿var OverflowScrollFallback = function (element) {
 
     var self = this;
 

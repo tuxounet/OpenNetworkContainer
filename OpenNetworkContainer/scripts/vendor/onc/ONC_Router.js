@@ -123,9 +123,14 @@ var ONC_Router = function (app) {
         classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
         cssFilePage = hash.substr(1, hash.length) + self.app.params.cssfilePageExtension;
 
+
+
+        //Fermetrue de la modale active si présente
+        if (self.hasModal())
+            self.hideModal();
+
+
         self.app.loading("Chargement de la page " + hash);
-
-
 
 
         //Récuperation du markup
