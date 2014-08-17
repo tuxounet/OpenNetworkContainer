@@ -18,16 +18,17 @@
         self.app = app;
 
 
-        //Activation du fallback de scroller 
-        scrollerFallback = new OverflowScrollFallback($(".onc-modal-content", self.DOM)[0]).setOnDOM();
-
         //On ne force pas ko 
         if (self.DOM && ko)
             ko.applyBindings(self, self.DOM);
 
-
-
-
+        //Activation du fallback de scroller
+        if ($(".onc-modal-content", self.DOM).length > 0) {
+            scrollerFallback = new OverflowScrollFallback($(".onc-modal-content", self.DOM)[0]).setOnDOM();
+        }
+        else {
+            scrollerFallback = new OverflowScrollFallback($(self.DOM)[0]).setOnDOM();
+        }
     }
 
 

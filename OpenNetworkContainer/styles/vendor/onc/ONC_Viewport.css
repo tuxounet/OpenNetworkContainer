@@ -60,6 +60,7 @@
     .no-onc-offcanvas .navbar-default .navbar-brand,
     .onc-offcanvas .navbar-default .navbar-brand {
         color: #fff;
+        cursor:pointer;
     }
 
     .no-onc-offcanvas .navmenu-default,

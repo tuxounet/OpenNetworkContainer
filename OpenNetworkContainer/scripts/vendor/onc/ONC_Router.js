@@ -333,10 +333,15 @@ var ONC_Router = function (app) {
 
         //Si il n'y a pas de viewmodel
         if (viewmodel == null)
-            new OverflowScrollFallback().setOnDOM($(".onc-modal-content", $modal)[0]);
+            new OverflowScrollFallback($(".onc-modal-content", $modal)[0]).setOnDOM();
 
         //Binding du viewmodel 
         if (viewmodel != null && viewmodel.bind != null) viewmodel.bind($modal[0], self.app);
+
+        //Load
+        if (viewmodel != null && viewmodel.load != null) viewmodel.load();
+
+
     }
 
     /* Masque un block Modal */

@@ -90,7 +90,6 @@
 
 
     self.setOnDOM = function () {
-
         if (isApplicable()) { //if touch events exist...
             var scrollStartPos = 0;
             el.addEventListener("touchstart", touchStart, false);
