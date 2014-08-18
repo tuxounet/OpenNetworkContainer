@@ -161,6 +161,10 @@ var ONC_Router = function (app) {
 
                     var $target = $(page);
 
+                    //Mise en mode "chargement de la page" 
+                    $("div[data-role=content]", $target).removeClass("onc-loaded");
+                    $("div[data-role=content]", $target).addClass("onc-loading");                    
+
                     //On recherche l'id de page sur le makup
                     pageId = $target.attr("id");
                     if (pageId != null) {

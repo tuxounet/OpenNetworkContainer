@@ -3,7 +3,7 @@
 
 
     <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
-        <a class="navmenu-brand visible-md visible-lg" href="#">Modales</a>
+        <a class="navmenu-brand visible-md visible-lg" data-bind="click:goBack"><span class="glyphicon glyphicon-chevron-left"></span> Tests/Modales</a>
         <ul class="nav navmenu-nav">
             <li><a href="#pages/home">Home</a></li>
         </ul>
@@ -13,7 +13,7 @@
 
 
     <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
-        <a class="navbar-brand " data-toggle="offcanvas" data-target=".navmenu" href="#">Modales</a>
+        <a class="navbar-brand" data-bind="click:goBack"><span class="glyphicon glyphicon-chevron-left"></span> Tests/Modales</a>
     </div>
 
     <div class="container" data-role="content">
@@ -29,7 +29,7 @@
             <div class="onc-modal">
                 <div class="onc-modal-title">
                     <div class="container">
-                        <button class="btn btn-lg" style="position:absolute;right:0;" data-bind="click:close">Fermer</button>
+                        <button class="btn btn-lg" style="position:absolute;right:0;" data-bind="click:close">X</button>
                         <strong>Test de modale</strong>
                     </div>
                 </div>

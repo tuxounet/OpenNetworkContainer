@@ -30,5 +30,11 @@ var modals_PageClass = function () {
 
         HelloWorld.app.router.showModal($("#modal_sample", self.DOM).html(), self.modalVM)
     }
-  
+
+
+    self.goBack = function () {
+        HelloWorld.app.router.goBack();
+    }
+
+
 };

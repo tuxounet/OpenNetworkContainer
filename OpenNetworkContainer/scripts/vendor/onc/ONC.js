@@ -20,7 +20,7 @@ var ONC = function (params) {
         forceLegacy: false,
         inAnimation: 13,
         outAnimation: 14,
-        autoRestore: true        
+        autoRestore: true
     }
 
     /* Configuration du conteneur */
@@ -159,8 +159,6 @@ var ONC = function (params) {
             //Ajout du spiner        
             self.spinner.spin();
             document.body.appendChild(self.spinner.el);
-            
-
         }
 
     }
@@ -169,9 +167,12 @@ var ONC = function (params) {
 
         ONC_Logger.log("APP: Completed : " + kind);
         if (self.isLoading == true) {
-
+            
             self.spinner.stop();
+                    
             self.isLoading = false;
+
+
 
             //Suprresion du voile 
             self.router.hideModalBackground();

@@ -25,6 +25,24 @@
     }
 
 
+        .onc-viewport .pages div[data-role=content].onc-loading {
+            opacity: 0;
+            -moz-transition: opacity 5s ease-in-out;
+            -o-transition: opacity 5s ease-in-out;
+            -webkit-transition: opacity 5s ease-in-out;
+            transition: opacity .25s ease-in-out;
+        }
+
+        .onc-viewport .pages div[data-role=content].onc-loaded {
+            opacity: 1;
+            -moz-transition: opacity .25s ease-in-out;
+            -o-transition: opacity .25s ease-in-out;
+            -webkit-transition: opacity .25s ease-in-out;
+            transition: opacity .25s ease-in-out;
+        }
+
+
+
 /*Mode legacy */
 .touch .onc-legacy {
     height: auto;
@@ -60,7 +78,7 @@
     .no-onc-offcanvas .navbar-default .navbar-brand,
     .onc-offcanvas .navbar-default .navbar-brand {
         color: #fff;
-        cursor:pointer;
+        cursor: pointer;
     }
 
     .no-onc-offcanvas .navmenu-default,

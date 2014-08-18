@@ -130,6 +130,9 @@
     <Content Include="pages\home.html" />
     <Content Include="pages\home.js" />
     <Content Include="pages\home.css" />
+    <Content Include="pages\tests\longLoad.css" />
+    <Content Include="pages\tests\longLoad.html" />
+    <Content Include="pages\tests\longLoad.js" />
     <Content Include="pages\tests\modals.css" />
     <Content Include="pages\tests\modals.html" />
     <Content Include="pages\tests\modals.js" />

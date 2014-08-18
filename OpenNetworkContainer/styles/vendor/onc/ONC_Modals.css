@@ -38,6 +38,7 @@
     background-color: #fff;
     height: 50px;
     font-size:2em;
+    overflow:hidden;
 }
 
 .onc-modal .onc-modal-content {

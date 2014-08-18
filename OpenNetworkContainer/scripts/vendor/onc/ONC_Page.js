@@ -46,7 +46,20 @@
         if (self.app)
             self.app.complete();
 
+        //Affichage du contenu
+        $("div[data-role=content]", self.DOM).addClass("onc-loaded");
+        $("div[data-role=content]", self.DOM).removeClass("onc-loading");
+
+
         ONC_Logger.log("ONC: Chargement Page terminé (" + self.pageId + ")");
+    }
+
+    
+    /* Bouton retour*/
+    self.goBack = function () {
+        self.app.router.goBack();
+        event.preventDefault();
+        return false; 
 
     }
 
