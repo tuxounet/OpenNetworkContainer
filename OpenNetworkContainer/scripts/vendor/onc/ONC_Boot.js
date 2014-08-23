@@ -93,7 +93,8 @@ var ONC_Boot = function (app) {
             ONC_Logger.warn("Mode Legacy");
         }
         
-                        
+               
+
         ONC_Logger.log("ONC: Boot terminé");
         //Si il y a un callback de démarrage, on l'invoque
         if (initCallback != null) initCallback();
