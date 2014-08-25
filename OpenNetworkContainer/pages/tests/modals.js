@@ -9,26 +9,25 @@ var modals_PageClass = function () {
     ONC_Page.call(this);
 
     var self = this;
+    
 
+    self.showLinkModal = function () {
 
-    function testModalVM() {
-        ONC_Modal.call(this);
-
-        var self = this;
-
-        self.ping = function () {
-            alert("Pong");
-        }
+        HelloWorld.app.router.showModal("#pages/modals/testModal", null,
+            function (ret) {
+                //Callback de fermeture
+                console.dir(ret);
+            });
     }
 
 
-    self.modalVM = null;
-    self.showModal = function () {
+    self.showSimpleModal = function () {
 
-        //Construction du vm 
-        self.modalVM = new testModalVM();
-
-        HelloWorld.app.router.showModal($("#modal_sample", self.DOM).html(), self.modalVM)
+        HelloWorld.app.router.showModal("#pages/modals/simpleModal", null,
+            function (ret) {
+                //Callback de fermeture
+                console.dir(ret);
+            });
     }
 
 

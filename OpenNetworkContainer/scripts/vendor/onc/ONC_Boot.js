@@ -28,17 +28,15 @@ var ONC_Boot = function (app) {
     // 'load', 'deviceready', 'offline', and 'online'.
     self.bindEvents = function () {
 
-
-        if (window.location.host != "localhost:8077") {
-            self.isPhoneGap = true;
-            //Mode phoneGap
-            document.addEventListener('deviceready', self.onDeviceReady, false);
-
-        }
-        else {
+        if (typeof cordova === "undefined") {
             //Mode web
             self.isPhoneGap = false;
             self.startup();
+        }
+        else {
+            //Mode phoneGap
+            self.isPhoneGap = true;
+            document.addEventListener('deviceready', self.onDeviceReady, false);
         }
 
     },
@@ -58,6 +56,15 @@ var ONC_Boot = function (app) {
 
     //Processus de démarrage
     self.startup = function () {
+
+
+        //Mode d'execution
+        if (self.isPhoneGap == true) {
+            ONC_Logger.info("ONC: Mode PhoneGap");
+        }
+        else {
+            ONC_Logger.info("ONC: Mode WebBrowser");
+        }
 
 
         //On demande de forcer le mode legacy 
@@ -83,17 +90,16 @@ var ONC_Boot = function (app) {
         //UserAgent
         ONC_Logger.log("DEBUG: UserAgent " + navigator.userAgent);
 
-             
+
         //Affichage des capacités du navigateur
         ONC_Logger.log("DEBUG: Capacité du navigateur : " + $("html").attr("class"));
 
-        if (self.isLegacy == true)
-        {
+        if (self.isLegacy == true) {
             $("body").addClass("onc-legacy");
-            ONC_Logger.warn("Mode Legacy");
+            ONC_Logger.warn("ONC: Mode Legacy");
         }
-        
-               
+
+
 
         ONC_Logger.log("ONC: Boot terminé");
         //Si il y a un callback de démarrage, on l'invoque

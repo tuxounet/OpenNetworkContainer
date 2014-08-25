@@ -11,6 +11,8 @@ var ONC_Router = function (app) {
     //Initialisation des variables
     self.currentPage = null;
     self.currentPageDOM = null;
+    self.currentModal = null;
+    self.currentModalDOM = null;
     self.slider = new ONC_PageSlider(app);
     self.sliderSelector = "body";
     self.initialized = null;
@@ -119,9 +121,9 @@ var ONC_Router = function (app) {
         }
 
         //Definition des elements a charger
-        markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
-        classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
-        cssFilePage = hash.substr(1, hash.length) + self.app.params.cssfilePageExtension;
+        var markupPage = hash.substr(1, hash.length) + self.app.params.markupPageExtension;
+        var classfilePage = hash.substr(1, hash.length) + self.app.params.classfilePageExtension;
+        var cssFilePage = hash.substr(1, hash.length) + self.app.params.cssfilePageExtension;
 
 
 
@@ -134,124 +136,103 @@ var ONC_Router = function (app) {
 
 
         //Récuperation du markup
-        $.ajax({
-            url: markupPage,
-            cache: false
-        }).done(function (result) {
+
+        self.includeHtmlFile(markupPage,
+            function (result) {
+
+                var page = result;
 
 
-            if (result != null) {
-                page = result;
-            }
-            else {
-                //On ne trouve pas le contenut
-                throw "La page " + hash + " est introuvable ou n'est pas correctement incorporée";
-            }
+                //inclusion du fichier CSS
+
+                self.includeCSSFile(cssFilePage, function (result) {
+
+                    //Dechargement de la page courante
+                    self.unloadCurrent(self.currentPageDOM, function () {
+
+                        var $target = $(page);
+
+                        //Mise en mode "chargement de la page" 
+                        $("div[data-role=content]", $target).removeClass("onc-loaded");
+                        $("div[data-role=content]", $target).addClass("onc-loading");
+
+                        //On recherche l'id de page sur le makup
+                        pageId = $target.attr("id");
+                        if (pageId != null) {
 
 
-            //inclusion du fichier CSS
+                            self.includeJSFile(classfilePage, function () {
 
-            self.includeCSSFile(cssFilePage, function (result) {
+                                ONC_Logger.log("ROUTER: Démarrage du sliding (" + pageId + ")");
 
+                                //On slide vers cette nouvelle page
+                                self.slider.slidePage($target, function () {
 
+                                    ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
 
+                                    //Assignation du nouveau "dom de la page courante"
+                                    self.currentPageDOM = $target[0];
 
-                //Dechargement de la page courante
-                self.unloadCurrent(self.currentPageDOM, function () {
+                                    //On tente d'initialiser la nouvelle page
+                                    if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
+                                        var pageInstance = eval("new " + pageId + "_PageClass()");
 
-                    var $target = $(page);
+                                        self.currentPage = pageInstance;
 
-                    //Mise en mode "chargement de la page" 
-                    $("div[data-role=content]", $target).removeClass("onc-loaded");
-                    $("div[data-role=content]", $target).addClass("onc-loading");                    
-
-                    //On recherche l'id de page sur le makup
-                    pageId = $target.attr("id");
-                    if (pageId != null) {
-
-
-                        self.includeJSFile(classfilePage, function () {
-
-                            ONC_Logger.log("ROUTER: Démarrage du sliding (" + pageId + ")");
-
-                            //On slide vers cette nouvelle page
-                            self.slider.slidePage($target, function () {
-
-                                ONC_Logger.log("ROUTER: Page slidée (" + pageId + ")");
-
-                                //Assignation du nouveau "dom de la page courante"
-                                self.currentPageDOM = $target[0];
-
-                                //On tente d'initialiser la nouvelle page
-                                if (eval("typeof " + pageId + "_PageClass == 'undefined'") == false) {
-                                    var pageInstance = eval("new " + pageId + "_PageClass()");
-
-                                    self.currentPage = pageInstance;
-
-                                    ONC_Logger.log("ROUTER: Page Instanciée (" + pageId + ")");
+                                        ONC_Logger.log("ROUTER: Page Instanciée (" + pageId + ")");
 
 
-                                    //Binding de la page
-                                    if (pageInstance != null && pageInstance.bind != null) {
-                                        pageInstance.bind($target[0], self.app, pageId);
+                                        //Binding de la page
+                                        if (pageInstance != null && pageInstance.bind != null) {
+                                            pageInstance.bind($target[0], self.app, pageId);
+                                        }
+
+                                        //Chargement de la page
+                                        if (pageInstance != null && pageInstance.load != null) {
+                                            pageInstance.load(param);
+                                        }
+                                    }
+                                    else {
+                                        ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + pageId + ")");
                                     }
 
-                                    //Chargement de la page
-                                    if (pageInstance != null && pageInstance.load != null) {
-                                        pageInstance.load(param);
-                                    }
-                                }
-                                else {
-                                    ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + pageId + ")");
-                                }
 
-                                //Activation de l'overthrow
-                                if (self.app.params.useOverthrow == true) {
-                                    overthrow.onc_setOnDOM($target[0]);
-                                }
+                                    if (callback) callback("OK");
 
+                                });
 
-                                if (callback) callback("OK");
+                            }, function () {
+
+                                //On slide malgré tout
+                                self.slider.slidePage($target);
+
+                                if (callback) callback("KO");
 
                             });
-
-                        }, function () {
-
-                            //On slide malgré tout
+                        }
+                        else {
+                            ONC_Logger.log("ROUTER: Slide sans classfile " + hash);
+                            //On slide vers cette nouvelle page
                             self.slider.slidePage($target);
+                            //Masque le spinner
+                            self.app.complete();
 
-                            if (callback) callback("KO");
-
-                        });
-                    }
-                    else {
-                        ONC_Logger.log("ROUTER: Slide sans classfile " + hash);
-                        //On slide vers cette nouvelle page
-                        self.slider.slidePage($target);
-                        //Masque le spinner
-                        self.app.complete();
-
-                        if (callback) callback("OK");
-                    }
-                });
-
-
+                            if (callback) callback("OK");
+                        }
+                    });
+                })
+            },
+            function () {
+                self.app.complete("Chargement de la page " + hash);
+                //Retour arrière
+                self.goBack();
+                if (callback) callback("KO");
             })
 
-
-
-
-        }).fail(function (xhr, e) {
-            self.app.onerror(e);
-            if (callback) callback("KO");
-        });
 
     }
 
     self.unloadCurrent = function (dom, callback) {
-
-
-
 
         //Si il y a déja une page en cours et qu'elle possede un destructeur => On la détruit
         if (self.currentPage != null && self.currentPage.unload != null)
@@ -322,30 +303,134 @@ var ONC_Router = function (app) {
     }
 
 
-    /* Affiche un bloc modal */
-    self.showModal = function (html, viewmodel, callback) {
-
-        var $modal = $(html);
-        if ($modal.hasClass("onc-modal") == false) {
-            throw "ROUTER: La modale n'est pas compatible";
+    /* Affiche une page modale */
+    self.showModal = function (link, callback, closeCallback) {
+        //Si une modale est déja affichée, on la masque 
+        if (self.hasModal() == true) {
+            self.hideModal();
         }
 
-        self.showModalBackground();
 
-        //Affichage de la modale
-        self.app.viewport.$viewport.append($modal);
-
-        //Si il n'y a pas de viewmodel
-        if (viewmodel == null)
-            new OverflowScrollFallback($(".onc-modal-content", $modal)[0]).setOnDOM();
-
-        //Binding du viewmodel 
-        if (viewmodel != null && viewmodel.bind != null) viewmodel.bind($modal[0], self.app);
-
-        //Load
-        if (viewmodel != null && viewmodel.load != null) viewmodel.load();
+        //Definition des elements a charger
+        var markupPage = link.substr(1, link.length) + self.app.params.markupPageExtension;
+        var classfilePage = link.substr(1, link.length) + self.app.params.classfilePageExtension;
+        var cssFilePage = link.substr(1, link.length) + self.app.params.cssfilePageExtension;
 
 
+        self.app.loading("Chargement de la modale " + link);
+
+        var modal = null;
+
+        self.includeHtmlFile(markupPage,
+            function (result) {
+
+                var $target = $(result);
+                //Vérifications
+                if ($target.hasClass("onc-modal") == false) {
+                    ONC_Logger.error("ROUTER: La modale n'est pas compatible");
+
+                    //Retour
+                    self.app.complete("Chargement de la modale " + link);
+                    if (callback) callback("KO");
+                    return; 
+                }
+
+                //inclusion du fichier CSS
+
+                self.includeCSSFile(cssFilePage, function (result) {
+
+                    //On recherche l'id de page sur le makup
+                    modalId = $target.attr("id");
+                    if (modalId != null) {
+
+
+                        self.includeJSFile(classfilePage, function () {
+
+
+
+                            ONC_Logger.log("ROUTER: Affichage de la modale  (" + modalId + ")");
+
+                            self.app.complete("Chargement de la modale " + link);
+                            self.showModalBackground();
+
+                            //Affichage de la modale
+                            self.app.viewport.$viewport.append($target);
+                            self.currentModalDOM = $target;
+
+
+                            //On tente d'initialiser la nouvelle page
+                            if (eval("typeof " + modalId + "_ModalClass == 'undefined'") == false) {
+                                self.currentModal = modalInstance = eval("new " + modalId + "_ModalClass()");
+
+
+                                ONC_Logger.log("ROUTER: Modale Instanciée (" + modalId + ")");
+
+
+                                //Binding de la page
+                                if (self.currentModal != null && self.currentModal.bind != null) {
+                                    self.currentModal.bind($target[0], self.app, modalId, closeCallback);
+                                }
+
+                                //Chargement de la page
+                                if (self.currentModal != null && self.currentModal.load != null) {
+                                    self.currentModal.load();
+                                }
+                            }
+                            else {
+                                ONC_Logger.warn("ROUTER: Définition du classfile introuvable (" + modalId + ")");
+                            }
+
+                            //Retour
+                            self.app.complete("Chargement de la modale " + link);
+                            if (callback) callback("OK", self.currentModal);
+
+                        }, function () {
+
+                            //On affiche malgré tout         
+
+                            self.app.complete("Chargement de la modale " + link);
+                            self.showModalBackground();
+
+                            //Affichage de la modale
+                            self.app.viewport.$viewport.append($target);
+                            self.currentModalDOM = $target;
+
+                            //Retour
+                            self.app.complete("Chargement de la modale " + link);
+                            if (callback) callback("KO", null);
+
+                        });
+                    }
+                    else {
+                        ONC_Logger.log("ROUTER: Modale sans classfile " + link);
+
+                        //Binding de la  sur un viewmodel vide
+                        self.currentModalDOM = $target;
+                        self.app.viewport.$viewport.append($target);
+
+                        self.currentModal = new ONC_Modal();
+
+                        if (self.currentModal != null && self.currentModal.bind != null) {
+                            self.currentModal.bind($target[0], self.app, modalId, closeCallback);
+                        }
+
+                        //Chargement de la page
+                        if (self.currentModal != null && self.currentModal.load != null) {
+                            self.currentModal.load();
+                        }
+
+                        //Retour
+                        self.app.complete("Chargement de la modale " + link);
+                        self.showModalBackground();
+                        if (callback) callback("OK", self.currentModal);
+                    }
+                })
+
+            },
+            function () {
+                self.app.complete("Chargement de la modale " + link);
+                if (callback) callback("KO");
+            });
     }
 
     /* Masque un block Modal */
@@ -360,14 +445,19 @@ var ONC_Router = function (app) {
 
             //Extraction du VM si existant 
             var modal = $(".onc-modal", self.app.viewport.$viewport)[0];
-            var vm = ko.dataFor(modal);
-
-            //Debinding
-            if (vm != null && vm.unbind != null) vm.unbind();
+            if (self.currentModal != null) {
+                //Debinding
+                if (self.currentModal.unbind != null) {
+                    self.currentModal.unbind();
+                    self.currentModal = null;
+                }
+            }
 
             //Suppression
             $(modal).remove();
+            self.currentModalDOM = null;
 
+            //Masquage du voile
             self.hideModalBackground();
 
         }
@@ -391,7 +481,58 @@ var ONC_Router = function (app) {
 
 
 
+
     /* Méthodes d'inclusion dynamique */
+
+    /* Inclusion d'un fichier HTML */
+    self.includeHtmlFile = function (url, win, fail) {
+        //On vérifie que l'inclusion n'est pas déja faite
+        var $data = $("body script[data-url='" + url + "']");
+        if ($data.length == 0) {
+            //L'inclusion n'est pas faite
+
+            //Récuperation du markup
+            $.ajax({
+                url: url,
+                cache: false
+            }).done(function (result) {
+                //Controle de surface
+                if (result == null) {
+                    ONC_Logger.error("La page " + hash + " est introuvable");
+                    if (fail) fail();
+                }
+
+                //Incorporation de la balise a la page 
+                var $markup = $("<script></script>")
+                $markup.attr("data-url", url);
+                $markup.attr("type", "text/template");
+                $markup.html(result);
+
+                //Ajout au DOM
+                $("body").append($markup);
+
+                //Retout
+                if (win) win($markup.html())
+
+
+            }).fail(function (e, xhr) {
+                self.app.onerror(e);
+                //Erreur de chargement du script
+                ONC_Logger.error("ROUTER: Erreur lors du chargement du fichier html " + url);
+                if (fail) fail();
+            })
+
+
+        } else {
+            //L'inclusion est déja faite
+            ONC_Logger.log("ROUTER: Fragment  déjà inclus " + url);
+            if (win) win($data.html());
+        }
+
+
+    }
+
+
     self.includeJSFile = function (url, win, fail) {
 
         //On vérifie que l'inclusion n'est pas déja faite 

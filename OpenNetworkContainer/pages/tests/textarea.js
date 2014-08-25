@@ -9,36 +9,23 @@ var textarea_PageClass = function () {
 
 
     self.goBack = function () {
-        HelloWorld.app.router.goBack(); 
-        
+        HelloWorld.app.router.goBack();
+
     }
     self.value = ko.observable("TEST");
 
-    function editModalVM() {
-        ONC_Modal.call(this);
-
-        var self = this;
-
-        self.textContent = ko.observable();
-        self.parent = null; 
-      
-        self.goDisplay = function () {
-
-            self.parent.value(self.textContent())            
-            self.close();
-
-        }
+    self.goEdit = function () {
+        HelloWorld.app.router.showModal("#pages/modals/TextTypeArea", self.onTypeAreaLoaded, self.onTypeAreaClosed);        
     }
 
+    self.onTypeAreaLoaded = function (status, vm) {
+        if (status != "OK") return;
 
-    self.modalVM = null;
-    self.goEdit = function () {
+        vm.textContent(self.value());
+    }
 
-        //Construction du vm 
-        self.modalVM = new editModalVM();
-        self.modalVM.textContent(self.value());
-        self.modalVM.parent = self;
-        HelloWorld.app.router.showModal($("#editModalContent", self.DOM).html(), self.modalVM)
+    self.onTypeAreaClosed = function (vm) {
+        self.value(vm.textContent());
     }
 
 

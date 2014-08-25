@@ -102,13 +102,19 @@ var ONC = function (params) {
 
     self.onBackButton = function () {
         ONC_Logger.log("BackButton");
-
-        return self.router.goBack();
+        
+        if (self.router.currentPage != null && self.router.currentPage.goBack() != null) {
+            //Lancement de la fonction goback sur la page en priorité
+            return self.router.currentPage.goBack();
+        }
+        else {
+            //Fonction retour par défaut 
+            return self.router.goBack();
+        }       
 
     };
     self.onMenuButton = function () {
         ONC_Logger.log("Menu button");
-
     };
 
 
