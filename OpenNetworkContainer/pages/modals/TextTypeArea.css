@@ -2,14 +2,14 @@
 
 .editContent.onc-modal .textareaContainer {
     position: relative;
-    width: 100%;
     height: 100%;
+    margin-right: 35px;
 }
 
     .editContent.onc-modal .textareaContainer textarea {
         height: 100%;
         width: 100%;
-        padding-right: 32px;
+        font-size: 16px;
     }
 
 .editContent.onc-modal .btn {

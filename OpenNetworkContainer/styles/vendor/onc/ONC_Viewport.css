@@ -22,6 +22,8 @@
 
     .onc-viewport .pages div[data-role=content] {
         padding-top: 10px;
+        overflow-y: auto;
+        height: 100%;
     }
 
 
@@ -44,22 +46,26 @@
 
 
 /*Mode legacy */
-.touch .onc-legacy {
-    height: auto;
+.onc-legacy {
+    height: 100%;
 }
 
-    .touch .onc-legacy,
-    .touch .onc-legacy .onc-viewport,
-    .touch .onc-legacy .onc-viewport .pages,
-    .touch .onc-legacy .onc-viewport .pages div[data-role=page] {
-        height: auto;
+    .onc-legacy,
+    .onc-legacy .onc-viewport,
+    .onc-legacy .onc-viewport .pages,
+    .onc-legacy .onc-viewport .pages div[data-role=page] {
+        height: 100%;
     }
 
 
-        .touch .onc-legacy .onc-viewport .pages div[data-role=page] {
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
+        .onc-legacy .onc-viewport .pages div[data-role=page] {
+            overflow: hidden;
         }
+
+            .onc-legacy .onc-viewport .pages div[data-role=page] div[data-role=content] {
+                overflow-y: auto;
+                height: 100%;
+            }
 
 /* Gestion du off canvas */
 

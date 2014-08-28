@@ -5,6 +5,10 @@
 
     self.textContent = ko.observable();
 
+    self.load = function () {
+
+        $("textarea", self.DOM).focus();
+    }
 
     self.goDisplay = function () {
 

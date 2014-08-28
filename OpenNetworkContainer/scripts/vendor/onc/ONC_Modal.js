@@ -9,7 +9,6 @@
     self.modalId = null;
     self.closeCallback = null;
 
-    var scrollerFallback = null;
 
     /* Bind la modal courante en tant que viewmodel */
     self.bind = function (domObject, app, modalId, closeCallBack) {
@@ -30,24 +29,42 @@
             ko.applyBindings(self, self.DOM);
 
         //Activation du fallback de scroller
-        if ($(".onc-modal-content", self.DOM).length > 0) {
-            scrollerFallback = new OverflowScrollFallback($(".onc-modal-content", self.DOM)[0]).setOnDOM();
+
+        if (overthrow.isApplicable == true) {
+            //Overthrow applicable, ajout de la classe necessaire
+            if ($(".onc-modal-content", self.DOM).length > 0) {
+                $(".onc-modal-content", self.DOM).addClass("overthrow");
+            }
+            else {
+                $(self.DOM).addClass("overthrow");
+            }
+            //Activations 
+            overthrow.set();
         }
-        else {
-            scrollerFallback = new OverflowScrollFallback($(self.DOM)[0]).setOnDOM();
-        }
+
     }
 
 
 
     /* De-Binde la modal courante en tant que viewmodel */
     self.unbind = function () {
+
+        //Si overthrow applicable
+        if (overthrow.isApplicable == true) {
+            //Desactivation
+            overthrow.forget();
+
+            //Suppression de la classe
+            if ($(".onc-modal-content", self.DOM).length > 0) {
+                $(".onc-modal-content", self.DOM).removeClass("overthrow");
+            }
+            else {
+                $(self.DOM).removeClass("overthrow");
+            }
+        }
+
         if (self.DOM)
             ko.cleanNode(self.DOM);
-
-
-        if (scrollerFallback)
-            scrollerFallback.destroy();
     }
 
 

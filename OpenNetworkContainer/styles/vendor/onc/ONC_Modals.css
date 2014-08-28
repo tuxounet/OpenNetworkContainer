@@ -25,26 +25,27 @@
     outline: 0;
     background-color: #fff;
     margin: 15px;
+    border: #333 2px solid;
+    border-radius: 5px;
 }
 
 
 
-.onc-modal .onc-modal-title {
-    width:100%;    
-    position:absolute; 
-    top: 0;
-    right:0; 
-    left:0; 
-    background-color: #fff;
-    height: 50px;
-    font-size:2em;
-    overflow:hidden;
-}
+    .onc-modal .onc-modal-title {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        background-color: #fff;
+        height: 50px;
+        font-size: 2em;
+        overflow: hidden;
+    }
 
-.onc-modal .onc-modal-content {
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-top : 50px; 
-
-}
+    .onc-modal .onc-modal-content {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-top: 50px;
+    }

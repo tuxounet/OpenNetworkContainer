@@ -64,8 +64,11 @@ var ONC = function (params) {
                 self.config.loadConfig(function () {
 
 
-                    //Application de fastClick     
-                    FastClick.attach(document.body);
+                    //Application de fastClick    ( si overthrow n'est pas applicable)
+                    if (overthrow.isApplicable == false) {
+                        FastClick.attach(document.body);
+                    }
+
 
 
                     //Gestionnaire de vue                    
@@ -102,7 +105,17 @@ var ONC = function (params) {
 
     self.onBackButton = function () {
         ONC_Logger.log("BackButton");
-        
+
+        if (self.router.hasModal() == true) {
+            if (self.router.currentModal != null && self.router.currentModal.close != null) {
+                //Fermetrue propre de la modale
+                self.router.currentModal.close();
+            }
+            //Si il ya une modale, on la ferme 
+            self.router.hideModal()
+            return false;
+        }
+
         if (self.router.currentPage != null && self.router.currentPage.goBack() != null) {
             //Lancement de la fonction goback sur la page en priorité
             return self.router.currentPage.goBack();
@@ -110,7 +123,7 @@ var ONC = function (params) {
         else {
             //Fonction retour par défaut 
             return self.router.goBack();
-        }       
+        }
 
     };
     self.onMenuButton = function () {
@@ -130,14 +143,16 @@ var ONC = function (params) {
             if (e.ErrorCode != null || e.ErrorMessage != null) {
                 ret = "AJAX:" + e.ErrorCode + " - " + e.ErrorMessage;
             }
-            else
-                ret = e;
+            else {
+                ret = JSON.stringify(e);
+
+            }
         }
         else
             ret = "Une erreur est survenue";
 
         ONC_Logger.error(ret);
-
+        self.alert(ret);
 
     },
 
@@ -173,9 +188,9 @@ var ONC = function (params) {
 
         ONC_Logger.log("APP: Completed : " + kind);
         if (self.isLoading == true) {
-            
+
             self.spinner.stop();
-                    
+
             self.isLoading = false;
 
 

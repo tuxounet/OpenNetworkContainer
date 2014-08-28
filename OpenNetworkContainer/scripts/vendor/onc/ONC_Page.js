@@ -6,6 +6,8 @@
 
     self.app = null;
 
+
+
     /* Bind la page courante en tant que viewmodel */
     self.bind = function (domObject, app, pageId) {
 
@@ -19,18 +21,39 @@
         //On ne force pas ko 
         if (self.DOM && ko)
             ko.applyBindings(self, self.DOM);
+
+
+        //Application de l'overthrow si applicable 
+        if (overthrow.isApplicable == true) {
+            //Overthrow applicable, ajout de la classe necessaire
+            $("div[data-role=content]", self.DOM).addClass("overthrow");
+
+            //Activations 
+            overthrow.set();
+        }
     }
 
 
 
     /* De-Binde la page courante en tant que viewmodel */
     self.unbind = function () {
+
+        //Si overthrow applicable
+        if (overthrow.isApplicable == true) {
+            //Desactivation
+            overthrow.forget();
+
+            //Suppression de la classe
+            $("div[data-role=content]", self.DOM).removeClass("overthrow");
+        }
+
+
         if (self.DOM)
             ko.cleanNode(self.DOM);
     }
 
     self.load = function () {
-     
+
         ONC_Logger.log("ONC: Page chargée (" + self.pageId + ")");
         self.loadCompleted();
     }
@@ -54,12 +77,12 @@
         ONC_Logger.log("ONC: Chargement Page terminé (" + self.pageId + ")");
     }
 
-    
+
     /* Bouton retour*/
     self.goBack = function () {
         self.app.router.goBack();
         event.preventDefault();
-        return false; 
+        return false;
 
     }
 
