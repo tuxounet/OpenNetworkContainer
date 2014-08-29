@@ -32,14 +32,22 @@
 
         if (overthrow.isApplicable == true) {
             //Overthrow applicable, ajout de la classe necessaire
+            var rootElement = null;
             if ($(".onc-modal-content", self.DOM).length > 0) {
                 $(".onc-modal-content", self.DOM).addClass("overthrow");
+                rootElement = $(".onc-modal-content", self.DOM)[0];
             }
             else {
                 $(self.DOM).addClass("overthrow");
+                rootElement = $(self.DOM)[0];
             }
-            //Activations 
-            overthrow.set();
+
+            if ($(rootElement).hasClass("no-onc-overthrow") == false)
+            {
+                //Activations 
+                overthrow.set();
+            }
+            
         }
 
     }
@@ -51,16 +59,25 @@
 
         //Si overthrow applicable
         if (overthrow.isApplicable == true) {
-            //Desactivation
-            overthrow.forget();
 
             //Suppression de la classe
+            var rootElement = null; 
             if ($(".onc-modal-content", self.DOM).length > 0) {
                 $(".onc-modal-content", self.DOM).removeClass("overthrow");
+                rootElement = $(".onc-modal-content", self.DOM)[0];
             }
             else {
                 $(self.DOM).removeClass("overthrow");
+                rootElement = $(self.DOM)[0];
             }
+
+
+            if ($(rootElement).hasClass("no-onc-overthrow") == false) {
+                //Désactivation
+                //     overthrow.forget(rootElement);
+            }
+
+           
         }
 
         if (self.DOM)

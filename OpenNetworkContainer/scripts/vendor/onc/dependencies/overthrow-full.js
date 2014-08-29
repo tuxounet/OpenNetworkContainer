@@ -1,7 +1,7 @@
 /*! Overthrow. An overflow:auto polyfill for responsive design. (c) 2012: Scott Jehl, Filament Group, Inc. http://filamentgroup.github.com/Overthrow/license.txt */
 (function (w, undefined) {
 
-	var doc = w.document,
+    var doc = w.document,
 		docElem = doc.documentElement,
 		enabledClassName = "overthrow-enabled",
 
@@ -23,13 +23,13 @@
 			// Whitelist some popular, overflow-supporting mobile browsers for now and the future
 			// These browsers are known to get overlow support right, but give us no way of detecting it.
 			(function () {
-				var ua = w.navigator.userAgent,
+			    var ua = w.navigator.userAgent,
 					// Webkit crosses platforms, and the browsers on our list run at least version 534
 					webkit = ua.match(/AppleWebKit\/([0-9]+)/),
 					wkversion = webkit && webkit[1],
 					wkLte534 = webkit && wkversion >= 534;
 
-				return (
+			    return (
 					/* Android 3+ with webkit gte 534
 					~: Mozilla/5.0 (Linux; U; Android 3.0; en-us; Xoom Build/HRI39) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13 */
 					ua.match(/Android ([0-9]+)/) && RegExp.$1 >= 3 && wkLte534 ||
@@ -52,43 +52,52 @@
 				);
 			})();
 
-	// Expose overthrow API
-	w.overthrow = {};
+    // Expose overthrow API
+    w.overthrow = {};
 
-	w.overthrow.enabledClassName = enabledClassName;
+    w.overthrow.enabledClassName = enabledClassName;
 
-	w.overthrow.addClass = function () {
-		if (docElem.className.indexOf(w.overthrow.enabledClassName) === -1) {
-			docElem.className += " " + w.overthrow.enabledClassName;
-		}
-	};
+    w.overthrow.addClass = function (rootElement) {
+        var root = docElem;
+        if (rootElement != null)
+        {
+            root = rootElement;
+        }
+        if (root.className.indexOf(w.overthrow.enabledClassName) === -1) {
+            root.className += " " + w.overthrow.enabledClassName;
+        }
+    };
 
-	w.overthrow.removeClass = function () {
-		docElem.className = docElem.className.replace(w.overthrow.enabledClassName, "");
-	};
+    w.overthrow.removeClass = function (rootElement) {
+        var root = docElem;
+        if (rootElement != null) {
+            root = rootElement;
+        }
+        root.className = root.className.replace(w.overthrow.enabledClassName, "");
+    };
 
-	// Enable and potentially polyfill overflow
-	w.overthrow.set = function () {
+    // Enable and potentially polyfill overflow
+    w.overthrow.set = function (rootElement) {
 
-		// If nativeOverflow or at least the element canBeFilledWithPoly, add a class to cue CSS that assumes overflow scrolling will work (setting height on elements and such)
-		if (nativeOverflow) {
-			w.overthrow.addClass();
-		}
+        // If nativeOverflow or at least the element canBeFilledWithPoly, add a class to cue CSS that assumes overflow scrolling will work (setting height on elements and such)
+        if (nativeOverflow) {
+            w.overthrow.addClass(rootElement);
+        }
 
-	};
+    };
 
-	// expose polyfillable 
-	w.overthrow.canBeFilledWithPoly = canBeFilledWithPoly;
+    // expose polyfillable 
+    w.overthrow.canBeFilledWithPoly = canBeFilledWithPoly;
 
-	// Destroy everything later. If you want to.
-	w.overthrow.forget = function () {
+    // Destroy everything later. If you want to.
+    w.overthrow.forget = function (rootElement) {
 
-		w.overthrow.removeClass();
+        w.overthrow.removeClass(rootElement);
 
-	};
+    };
 
-	// Expose overthrow API
-	w.overthrow.support = nativeOverflow ? "native" : "none";
+    // Expose overthrow API
+    w.overthrow.support = nativeOverflow ? "native" : "none";
 
 
 
@@ -97,14 +106,14 @@
 /*! Overthrow. An overflow:auto polyfill for responsive design. (c) 2012: Scott Jehl, Filament Group, Inc. http://filamentgroup.github.com/Overthrow/license.txt */
 (function (w, o, undefined) {
 
-	// o is overthrow reference from overthrow-polyfill.js
-	if (o === undefined) {
-		return;
-	}
+    // o is overthrow reference from overthrow-polyfill.js
+    if (o === undefined) {
+        return;
+    }
 
-	o.scrollIndicatorClassName = "overthrow";
+    o.scrollIndicatorClassName = "overthrow";
 
-	var doc = w.document,
+    var doc = w.document,
 		docElem = doc.documentElement,
 		// o api
 		nativeOverflow = o.support === "native",
@@ -114,44 +123,54 @@
 		forget = o.forget,
 		scrollIndicatorClassName = o.scrollIndicatorClassName;
 
-	// find closest overthrow (elem or a parent)
-	o.closest = function (target, ascend) {
-		return !ascend && target.className && target.className.indexOf(scrollIndicatorClassName) > -1 && target || o.closest(target.parentNode);
-	};
+    // find closest overthrow (elem or a parent)
+    o.closest = function (target, ascend) {
 
-	// polyfill overflow
-	var enabled = false;
+        return !ascend && target.className && target.className.indexOf(scrollIndicatorClassName) > -1 && target || o.closest(target.parentNode);
 
 
-	o.isApplicable = (enabled || nativeOverflow || !canBeFilledWithPoly) ? false : true;
+    };
 
-	o.set = function () {
+    // polyfill overflow
+    var enabled = false;
 
-		set();
 
-		// If nativeOverflow or it doesn't look like the browser canBeFilledWithPoly, our job is done here. Exit viewport left.
-		if (enabled || nativeOverflow || !canBeFilledWithPoly) {
-			return;
-		}
-		w.overthrow.addClass();
+    o.isApplicable = (enabled || nativeOverflow || !canBeFilledWithPoly) ? false : true;
 
-		enabled = true;
+    o.set = function (rootElement) {
 
-		o.support = "polyfilled";
+      
+        set(rootElement);
 
-		o.forget = function () {
-			forget();
-			enabled = false;
-			// Remove touch binding (check for method support since this part isn't qualified by touch support like the rest)
-			if (doc.removeEventListener) {
-				doc.removeEventListener("touchstart", start, false);
-			}
-		};
+        // If nativeOverflow or it doesn't look like the browser canBeFilledWithPoly, our job is done here. Exit viewport left.
+        if (enabled || nativeOverflow || !canBeFilledWithPoly) {
+            return;
+        }
 
-		// Fill 'er up!
-		// From here down, all logic is associated with touch scroll handling
-		// elem references the overthrow element in use
-		var elem,
+
+        w.overthrow.addClass(rootElement);
+
+        enabled = true;
+
+        o.support = "polyfilled";
+       
+        o.forget = function () {
+            forget(rootElement);
+            enabled = false;
+            // Remove touch binding (check for method support since this part isn't qualified by touch support like the rest)
+            var root = doc;
+            if (rootElement != null) {
+                root = rootElement;
+            }
+            if (root.removeEventListener) {
+                root.removeEventListener("touchstart", start, false);
+            }
+        };
+
+        // Fill 'er up!
+        // From here down, all logic is associated with touch scroll handling
+        // elem references the overthrow element in use
+        var elem,
 
 			// The last several Y values are kept here
 			lastTops = [],
@@ -167,13 +186,13 @@
 
 			// For a new gesture, or change in direction, reset the values from last scroll
 			resetVertTracking = function () {
-				lastTops = [];
-				lastDown = null;
+			    lastTops = [];
+			    lastDown = null;
 			},
 
 			resetHorTracking = function () {
-				lastLefts = [];
-				lastRight = null;
+			    lastLefts = [];
+			    lastRight = null;
 			},
 
 			// On webkit, touch events hardly trickle through textareas and inputs
@@ -182,27 +201,27 @@
 			// Thanks Thomas Bachem http://stackoverflow.com/a/5798681 for the following
 			inputs,
 			setPointers = function (val) {
-				inputs = elem.querySelectorAll("textarea, input");
-				for (var i = 0, il = inputs.length; i < il; i++) {
-					inputs[i].style.pointerEvents = val;
-				}
+			    inputs = elem.querySelectorAll("textarea, input");
+			    for (var i = 0, il = inputs.length; i < il; i++) {
+			        inputs[i].style.pointerEvents = val;
+			    }
 			},
 
 			// For nested overthrows, changeScrollTarget restarts a touch event cycle on a parent or child overthrow
 			changeScrollTarget = function (startEvent, ascend) {
-				if (doc.createEvent) {
-					var newTarget = (!ascend || ascend === undefined) && elem.parentNode || elem.touchchild || elem,
+			    if (doc.createEvent) {
+			        var newTarget = (!ascend || ascend === undefined) && elem.parentNode || elem.touchchild || elem,
 						tEnd;
 
-					if (newTarget !== elem) {
-						tEnd = doc.createEvent("HTMLEvents");
-						tEnd.initEvent("touchend", true, true);
-						elem.dispatchEvent(tEnd);
-						newTarget.touchchild = elem;
-						elem = newTarget;
-						newTarget.dispatchEvent(startEvent);
-					}
-				}
+			        if (newTarget !== elem) {
+			            tEnd = doc.createEvent("HTMLEvents");
+			            tEnd.initEvent("touchend", true, true);
+			            elem.dispatchEvent(tEnd);
+			            newTarget.touchchild = elem;
+			            elem = newTarget;
+			            newTarget.dispatchEvent(startEvent);
+			        }
+			    }
 			},
 
 			// Touchstart handler
@@ -210,23 +229,25 @@
 			// Touchend unbinds them again, until next time
 			start = function (e) {
 
-				// Stop any throw in progress
-				if (o.intercept) {
-					o.intercept();
-				}
+			    // Stop any throw in progress
+			    if (o.intercept) {
+			        o.intercept();
+			    }
 
-				// Reset the distance and direction tracking
-				resetVertTracking();
-				resetHorTracking();
+			    // Reset the distance and direction tracking
+			    resetVertTracking();
+			    resetHorTracking();
 
-				elem = o.closest(e.target);
+			    elem = o.closest(e.target);
+			    
+			    if (!elem || elem === docElem || e.touches.length > 1) {			      
+			        return;
+			    }
 
-				if (!elem || elem === docElem || e.touches.length > 1) {
-					return;
-				}
+			    console.log("ELEM:" + $(elem).attr("class"));
 
-				setPointers("none");
-				var touchStartE = e,
+			    setPointers("none");
+			    var touchStartE = e,
 					scrollT = elem.scrollTop,
 					scrollL = elem.scrollLeft,
 					height = elem.offsetHeight,
@@ -239,68 +260,72 @@
 					// Touchmove handler
 					move = function (e) {
 
-						var ty = scrollT + startY - e.touches[0].pageY,
+					    var ty = scrollT + startY - e.touches[0].pageY,
 							tx = scrollL + startX - e.touches[0].pageX,
 							down = ty >= (lastTops.length ? lastTops[0] : 0),
 							right = tx >= (lastLefts.length ? lastLefts[0] : 0);
 
-						// If there's room to scroll the current container, prevent the default window scroll
-						if ((ty > 0 && ty < scrollHeight - height) || (tx > 0 && tx < scrollWidth - width)) {
-							e.preventDefault();
-						}
-							// This bubbling is dumb. Needs a rethink.
-						else {
-							changeScrollTarget(touchStartE);
-						}
+					    // If there's room to scroll the current container, prevent the default window scroll
+					    if ((ty > 0 && ty < scrollHeight - height) || (tx > 0 && tx < scrollWidth - width)) {
+					        e.preventDefault();
+					    }
+					        // This bubbling is dumb. Needs a rethink.
+					    else {
+					        changeScrollTarget(touchStartE);
+					    }
 
-						// If down and lastDown are inequal, the y scroll has changed direction. Reset tracking.
-						if (lastDown && down !== lastDown) {
-							resetVertTracking();
-						}
+					    // If down and lastDown are inequal, the y scroll has changed direction. Reset tracking.
+					    if (lastDown && down !== lastDown) {
+					        resetVertTracking();
+					    }
 
-						// If right and lastRight are inequal, the x scroll has changed direction. Reset tracking.
-						if (lastRight && right !== lastRight) {
-							resetHorTracking();
-						}
+					    // If right and lastRight are inequal, the x scroll has changed direction. Reset tracking.
+					    if (lastRight && right !== lastRight) {
+					        resetHorTracking();
+					    }
 
-						// remember the last direction in which we were headed
-						lastDown = down;
-						lastRight = right;
+					    // remember the last direction in which we were headed
+					    lastDown = down;
+					    lastRight = right;
 
-						// set the container's scroll
-						elem.scrollTop = ty;
-						elem.scrollLeft = tx;
+					    // set the container's scroll
+					    elem.scrollTop = ty;
+					    elem.scrollLeft = tx;
 
-						lastTops.unshift(ty);
-						lastLefts.unshift(tx);
+					    lastTops.unshift(ty);
+					    lastLefts.unshift(tx);
 
-						if (lastTops.length > 3) {
-							lastTops.pop();
-						}
-						if (lastLefts.length > 3) {
-							lastLefts.pop();
-						}
+					    if (lastTops.length > 3) {
+					        lastTops.pop();
+					    }
+					    if (lastLefts.length > 3) {
+					        lastLefts.pop();
+					    }
 					},
 
 					// Touchend handler
 					end = function (e) {
 
-						// Bring the pointers back
-						setPointers("auto");
-						setTimeout(function () {
-							setPointers("none");
-						}, 450);
-						elem.removeEventListener("touchmove", move, false);
-						elem.removeEventListener("touchend", end, false);
+					    // Bring the pointers back
+					    setPointers("auto");
+					    setTimeout(function () {
+					        setPointers("none");
+					    }, 450);
+					    elem.removeEventListener("touchmove", move, false);
+					    elem.removeEventListener("touchend", end, false);
 					};
 
-				elem.addEventListener("touchmove", move, false);
-				elem.addEventListener("touchend", end, false);
+			    elem.addEventListener("touchmove", move, false);
+			    elem.addEventListener("touchend", end, false);
 			};
 
-		// Bind to touch, handle move and end within
-		doc.addEventListener("touchstart", start, false);
-	};
+        // Bind to touch, handle move and end within
+        var root = doc;
+        if (rootElement != null) {
+            root = rootElement;
+        }
+        root.addEventListener("touchstart", start, false);
+    };
 
 })(this, this.overthrow);
 
@@ -308,25 +333,25 @@
 /*! Overthrow. An overflow:auto polyfill for responsive design. (c) 2012: Scott Jehl, Filament Group, Inc. http://filamentgroup.github.com/Overthrow/license.txt */
 (function (w, o, undefined) {
 
-	// o is overthrow reference from overthrow-polyfill.js
-	if (o === undefined) {
-		return;
-	}
+    // o is overthrow reference from overthrow-polyfill.js
+    if (o === undefined) {
+        return;
+    }
 
-	// Easing can use any of Robert Penner's equations (http://www.robertpenner.com/easing_terms_of_use.html). By default, overthrow includes ease-out-cubic
-	// arguments: t = current iteration, b = initial value, c = end value, d = total iterations
-	// use w.overthrow.easing to provide a custom function externally, or pass an easing function as a callback to the toss method
-	o.easing = function (t, b, c, d) {
-		return c * ((t = t / d - 1) * t * t + 1) + b;
-	};
+    // Easing can use any of Robert Penner's equations (http://www.robertpenner.com/easing_terms_of_use.html). By default, overthrow includes ease-out-cubic
+    // arguments: t = current iteration, b = initial value, c = end value, d = total iterations
+    // use w.overthrow.easing to provide a custom function externally, or pass an easing function as a callback to the toss method
+    o.easing = function (t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+    };
 
-	// tossing property is true during a programatic scroll
-	o.tossing = false;
+    // tossing property is true during a programatic scroll
+    o.tossing = false;
 
-	// Keeper of intervals
-	var timeKeeper;
+    // Keeper of intervals
+    var timeKeeper;
 
-	/* toss scrolls and element with easing
+    /* toss scrolls and element with easing
 
 	// elem is the element to scroll
 	// options hash:
@@ -336,93 +361,93 @@
 		* easing is an optional custom easing function. Default is w.overthrow.easing. Must follow the easing function signature
 
 	*/
-	o.toss = function (elem, options) {
-		o.intercept();
-		var i = 0,
+    o.toss = function (elem, options) {
+        o.intercept();
+        var i = 0,
 			sLeft = elem.scrollLeft,
 			sTop = elem.scrollTop,
 			// Toss defaults
 			op = {
-				top: "+0",
-				left: "+0",
-				duration: 50,
-				easing: o.easing,
-				finished: function () { }
+			    top: "+0",
+			    left: "+0",
+			    duration: 50,
+			    easing: o.easing,
+			    finished: function () { }
 			},
 			endLeft, endTop, finished = false;
 
-		// Mixin based on predefined defaults
-		if (options) {
-			for (var j in op) {
-				if (options[j] !== undefined) {
-					op[j] = options[j];
-				}
-			}
-		}
+        // Mixin based on predefined defaults
+        if (options) {
+            for (var j in op) {
+                if (options[j] !== undefined) {
+                    op[j] = options[j];
+                }
+            }
+        }
 
-		// Convert relative values to ints
-		// First the left val
-		if (typeof op.left === "string") {
-			op.left = parseFloat(op.left);
-			endLeft = op.left + sLeft;
-		}
-		else {
-			endLeft = op.left;
-			op.left = op.left - sLeft;
-		}
-		// Then the top val
-		if (typeof op.top === "string") {
+        // Convert relative values to ints
+        // First the left val
+        if (typeof op.left === "string") {
+            op.left = parseFloat(op.left);
+            endLeft = op.left + sLeft;
+        }
+        else {
+            endLeft = op.left;
+            op.left = op.left - sLeft;
+        }
+        // Then the top val
+        if (typeof op.top === "string") {
 
-			op.top = parseFloat(op.top);
-			endTop = op.top + sTop;
-		}
-		else {
-			endTop = op.top;
-			op.top = op.top - sTop;
-		}
+            op.top = parseFloat(op.top);
+            endTop = op.top + sTop;
+        }
+        else {
+            endTop = op.top;
+            op.top = op.top - sTop;
+        }
 
-		o.tossing = true;
-		timeKeeper = setInterval(function () {
-			if (i++ < op.duration) {
-				elem.scrollLeft = op.easing(i, sLeft, op.left, op.duration);
-				elem.scrollTop = op.easing(i, sTop, op.top, op.duration);
-			}
-			else {
-				if (endLeft !== elem.scrollLeft) {
-					elem.scrollLeft = endLeft;
-				} else {
-					// if the end of the vertical scrolling has taken place
-					// we know that we're done here call the callback
-					// otherwise signal that horizontal scrolling is complete
-					if (finished) {
-						op.finished();
-					}
-					finished = true;
-				}
+        o.tossing = true;
+        timeKeeper = setInterval(function () {
+            if (i++ < op.duration) {
+                elem.scrollLeft = op.easing(i, sLeft, op.left, op.duration);
+                elem.scrollTop = op.easing(i, sTop, op.top, op.duration);
+            }
+            else {
+                if (endLeft !== elem.scrollLeft) {
+                    elem.scrollLeft = endLeft;
+                } else {
+                    // if the end of the vertical scrolling has taken place
+                    // we know that we're done here call the callback
+                    // otherwise signal that horizontal scrolling is complete
+                    if (finished) {
+                        op.finished();
+                    }
+                    finished = true;
+                }
 
-				if (endTop !== elem.scrollTop) {
-					elem.scrollTop = endTop;
-				} else {
-					// if the end of the horizontal scrolling has taken place
-					// we know that we're done here call the callback
-					if (finished) {
-						op.finished();
-					}
-					finished = true;
-				}
+                if (endTop !== elem.scrollTop) {
+                    elem.scrollTop = endTop;
+                } else {
+                    // if the end of the horizontal scrolling has taken place
+                    // we know that we're done here call the callback
+                    if (finished) {
+                        op.finished();
+                    }
+                    finished = true;
+                }
 
-				o.intercept();
-			}
-		}, 1);
+                o.intercept();
+            }
+        }, 1);
 
-		// Return the values, post-mixin, with end values specified
-		return { top: endTop, left: endLeft, duration: o.duration, easing: o.easing };
-	};
+        // Return the values, post-mixin, with end values specified
+        return { top: endTop, left: endLeft, duration: o.duration, easing: o.easing };
+    };
 
-	// Intercept any throw in progress
-	o.intercept = function () {
-		clearInterval(timeKeeper);
-		o.tossing = false;
-	};
+    // Intercept any throw in progress
+    o.intercept = function () {
+        clearInterval(timeKeeper);
+        o.tossing = false;
+    };
 
 })(this, this.overthrow);

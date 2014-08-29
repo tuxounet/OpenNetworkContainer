@@ -40,11 +40,13 @@
 
         //Si overthrow applicable
         if (overthrow.isApplicable == true) {
-            //Desactivation
-            overthrow.forget();
 
             //Suppression de la classe
             $("div[data-role=content]", self.DOM).removeClass("overthrow");
+
+            //Desactivation
+            overthrow.forget();
+
         }
 
 
